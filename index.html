@@ -40,7 +40,7 @@
     .container {
       max-width: 600px;
       margin: 0 auto;
-      padding: 2rem 1rem;
+      padding: 7rem 1rem 2rem 1rem;
     }
 
     .form-box {
@@ -135,15 +135,89 @@
         transform: translateY(0);
       }
     }
+
+    /* Şifreli mesaj stilleri */
+    .secret-box {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin: 2rem auto;
+      max-width: 600px;
+      animation: fadeSlide 1s ease;
+      text-align: center;
+    }
+
+    .secret-input {
+      padding: 0.7rem;
+      border-radius: 10px;
+      border: none;
+      width: 70%;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .secret-button {
+      padding: 0.6rem 1.2rem;
+      background: #ff4d6d;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .secret-message {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border-radius: 15px;
+      background: linear-gradient(to right, #ff758c, #ff7eb3);
+      color: #111;
+      font-size: 1.2rem;
+      animation: envelopeOpen 1.5s ease forwards;
+      display: none;
+    }
+
+    .error {
+      color: #ffb3c6;
+      margin-top: 0.5rem;
+    }
+
+    @keyframes envelopeOpen {
+      0% {
+        transform: rotateX(-90deg);
+        opacity: 0;
+      }
+      60% {
+        transform: rotateX(20deg);
+        opacity: 1;
+      }
+      100% {
+        transform: rotateX(0);
+      }
+    }
+
   </style>
 </head>
 <body>
 
   <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen basman yeterli D.</a>
 
+  <!-- Şifreli mesaj kutusu üstte -->
+  <div class="secret-box">
+    <h2 style="color: #ffb6c1; margin-bottom: 1rem;">📩 Gizli Mesaj İçin Şifre Gir</h2>
+    <input type="password" id="secretPassword" class="secret-input" placeholder="Şifreyi gir..." />
+    <br />
+    <button class="secret-button" onclick="checkPassword()">Göster</button>
+    <div class="error" id="errorMsg"></div>
+    <div class="secret-message" id="secretMessage">
+       💌<br><br>
+      
+    </div>
+  </div>
+
   <div class="container">
     <div class="form-box">
-      <h1>Bir şeyler yaz...</h1>
+      <h1>istediğin zaman yazabilirsin</h1>
       <p style="color:#ccc; font-size: 0.9rem; text-align: center; margin-bottom: 1rem;">
         Bu alan sadece <strong>Dilara</strong> için açık 💬
       </p>
@@ -157,7 +231,7 @@
     <div class="card">
       <h2 style="font-size: 1.5rem; margin-bottom: 1rem; text-align:center;">Sorduğun Sorular İçin Buraya Bak</h2>
       <div class="note-message">
-        <strong>✨ Not:</strong> Bir şeyler yazdıysan cevabın bir süre sonra burada görünebilir. Arada tekrar kontrol et.
+        <strong>✨ Not:</strong> Bir şeyler yazdıysan cevabın bir süre sonra burada görünür. Arada tekrar kontrol et.
       </div>
       <div class="qa-container">
         <div class="qa-card">
@@ -197,6 +271,20 @@
   </div>
 
   <script>
+    function checkPassword() {
+      const input = document.getElementById("secretPassword").value.trim().toLowerCase();
+      const messageBox = document.getElementById("secretMessage");
+      const errorMsg = document.getElementById("errorMsg");
+
+      if (input === "dilara") {
+        messageBox.style.display = "block";
+        errorMsg.textContent = "";
+      } else {
+        errorMsg.textContent = "❌ Şifre yanlış, tekrar dene.";
+        messageBox.style.display = "none";
+      }
+    }
+
     fetch("https://formspree.io/f/mrblpkgk", {
       method: "POST",
       headers: {
