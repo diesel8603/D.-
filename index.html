@@ -13,6 +13,30 @@
       color: #fff;
     }
 
+    .arama-buton {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #ff4081, #ff80ab);
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      animation: pulse 1.8s infinite;
+      z-index: 999;
+      text-decoration: none;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
     .container {
       max-width: 600px;
       margin: 0 auto;
@@ -115,82 +139,64 @@
 </head>
 <body>
 
-  <div class="container">
+  <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen basman yeterli D.</a>
 
-    <!-- FORM -->
+  <div class="container">
     <div class="form-box">
       <h1>Bir şeyler yaz...</h1>
-
-      <!-- Tatlı Dilara mesajı -->
       <p style="color:#ccc; font-size: 0.9rem; text-align: center; margin-bottom: 1rem;">
         Bu alan sadece <strong>Dilara</strong> için açık 💬
       </p>
-
       <form action="https://formspree.io/f/mrblpkgk" method="POST">
-        <!-- Gizli ad alanı -->
         <input type="hidden" name="isim" value="Dilara" />
-        
         <textarea name="soru" rows="4" placeholder="Bir şey sor veya paylaş..." required></textarea>
         <button type="submit">Gönder</button>
       </form>
     </div>
 
-    <!-- Soru-Cevap Görüntüleme Bölümü -->
     <div class="card">
       <h2 style="font-size: 1.5rem; margin-bottom: 1rem; text-align:center;">Sorduğun Sorular İçin Buraya Bak</h2>
-
-      <!-- ✨ NOT KUTUSU -->
       <div class="note-message">
         <strong>✨ Not:</strong> Bir şeyler yazdıysan cevabın bir süre sonra burada görünebilir. Arada tekrar kontrol et.
       </div>
-
       <div class="qa-container">
-        <!-- Örnek cevap kartları -->
         <div class="qa-card">
           <div class="qa-question">"Eski bir tanıdık?"</div>
           <div class="qa-answer">Ben anonim kalmayı tercih ediyorum, seni merak ettim.</div>
         </div>
-
         <div class="qa-card">
           <div class="qa-question">"Ben de seni merak ettim..."</div>
           <div class="qa-answer">Aslında biliyorsun kim olduğumu, o değildir diye ümitlenmek istemiyorsun.</div>
         </div>
-        
         <div class="qa-card">
           <div class="qa-question">"Hayır bilmiyorum söyler misin"</div>
           <div class="qa-answer">bu bir sırr , hala sorumu cevaplamadın.</div>
         </div>
-
         <div class="qa-card">
           <div class="qa-question">"Benim soruma cevap verdikten sonra ben de senin soruna cevap veririm"</div>
           <div class="qa-answer">inatçılığın hala aynı, bence gizemi bozmadan devam edelim </div>
         </div>
-
         <div class="qa-card">
           <div class="qa-question">"Gizemi bozalım söyle sen ya da daha da cevap vermeyeceğim"</div>
           <div class="qa-answer"> merağını görebiliyorum , hic mi fikrin yok kim olduğuma dair ? birkaç isim sayabilirsin medela...</div>
         </div>
-
-        <div class="qa-question">"Söyle artık"</div>
+        <div class="qa-card">
+          <div class="qa-question">"Söyle artık"</div>
           <div class="qa-answer"> belki de tekrar tanışmalıyız , ne dersin?</div>
-
+        </div>
         <div class="qa-card">
           <div class="qa-question">"İsmini söyle ya da cevap vermem"</div>
           <div class="qa-answer"> ibrahim </div>
-
-          <div class="qa-card">
+        </div>
+        <div class="qa-card">
           <div class="qa-question">"Anladım"</div>
           <div class="qa-answer"> pek memnun olmadın anlaşılan, gizemi bozmamalıyız demiştim. </div>
-          </div>
         </div>
       </div>
-      </div>
     </div>
-
   </div>
 
   <script>
-    // Ziyaretçi sayfayı açtığında Formspree ile bildirim gönder
     fetch("https://formspree.io/f/mrblpkgk", {
       method: "POST",
       headers: {
