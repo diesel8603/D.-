@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merak Ettim...</title>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Rubik', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #1f002f, #ff416c);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.4);
+      position: relative;
+      transition: all 0.4s ease;
+      animation: fadeIn 1.2s ease;
+    }
+
+    .question {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+      animation: fadeSlide 1.4s ease;
+      word-break: break-word;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    textarea, input[type="text"] {
+      padding: 0.9rem;
+      border: none;
+      border-radius: 10px;
+      resize: vertical;
+      font-size: 1rem;
+      background: #f8f8f8;
+      color: #333;
+    }
+
+    button, .skip {
+      background: #ff4d6d;
+      color: white;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .skip {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: #f1f1f1;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .skip:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .messages {
+      margin-top: 1.2rem;
+      font-size: 1.05rem;
+      color: #ffccdd;
+      font-weight: bold;
+      min-height: 1.5rem;
+      transition: opacity 0.3s ease;
+    }
+
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    .bounce {
+      animation: bounce 0.4s ease;
+    }
+
+    @media(max-width: 600px) {
+      .card {
+        padding: 1.3rem;
+      }
+
+      .question {
+        font-size: 1.2rem;
+      }
+    }
+    
+    .note-box {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.65);
+  color: #fff;
+  padding: 1rem 1.4rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 999;
+  text-align: center;
+  max-width: 90%;
+  animation: fadeInNote 1.2s ease;
+}
+
+@keyframes fadeInNote {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="question" id="questionText">
+      eski bir tanıdık... nasılsın herşey yolunda mı?
+    </div>
+
+    <form id="responseForm">
+      <textarea name="message" rows="4" placeholder="İçinden ne geçiyorsa yaz..."></textarea>
+      <input type="text" name="question" placeholder="Bana bir şey sormak ister misin? ">
+      <button type="submit">Gönder</button>
+    </form>
+
+    <div class="skip" id="skipBtn">Cevap vermek istemiyorum</div>
+    <div class="messages" id="messageBox"></div>
+  </div>
+
+  <script>
+    const skipBtn = document.getElementById("skipBtn");
+    const card = document.getElementById("card");
+    const msgBox = document.getElementById("messageBox");
+    const responseForm = document.getElementById("responseForm");
+
+    const prompts = [
+      "Cevap vermesen de... belki bir şeyler paylaşmak istersin?",
+      " seni  merak ettim...",
+      "Bak buraya kadar geldin, iki satır yaz geç.",
+      "Yalnız olmadığını bil istedim.",
+      "Sadece bir cümle... belki iyi gelir.",
+      "Tamam ama son kez soruyorum: Yazmayacak mısın?",
+      "İçindekini tutma, burası güvenli.",
+      
+    ];
+
+    let skipIndex = 0;
+
+    skipBtn.addEventListener("click", () => {
+      card.classList.add("bounce");
+      setTimeout(() => card.classList.remove("bounce"), 400);
+
+      if (skipIndex < prompts.length) {
+        msgBox.innerText = prompts[skipIndex];
+        skipIndex++;
+      } else {
+        msgBox.innerText = "kendine iyi bak ";
+      }
+    });
+
+    responseForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const message = responseForm.message.value.trim();
+      const question = responseForm.question.value.trim();
+      const timestamp = new Date().toLocaleString();
+
+      if (message === "" && question === "") {
+        msgBox.innerText = " bir şeyler yaz...";
+        return;
+      }
+
+      fetch("https://formspree.io/f/mdkdekv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({ message, question, timestamp })
+      }).then(response => {
+        if (response.ok) {
+          msgBox.innerText = "Gönderildi, teşekkür ederim ❤️";
+          responseForm.reset();
+        } else {
+          msgBox.innerText = "Bir hata oluştu, tekrar dener misin?";
+        }
+      }).catch(error => {
+        msgBox.innerText = "Gönderilemedi 😞";
+      });
+    });
+
+    // Ziyaret bildirimi
+    fetch("https://formspree.io/f/mdkdekv", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body: JSON.stringify({
+        message: "Bir kullanıcı sayfayı ziyaret etti",
+        timestamp: new Date().toLocaleString()
+      })
+    }).catch(() => {
+      console.warn("Ziyaret bildirimi gönderilemedi.");
+    });
+  </script>
+  <div class="note-box">
+  <strong>Not:</strong> Bir şeyler yazdıktan sonra almak istediğin cevaplar için siteyi arada kontrol et.
+</div>
+
+</body>
+</html>
