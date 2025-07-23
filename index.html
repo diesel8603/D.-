@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dilara'ya Mesaj</title>
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,6 +12,15 @@
       padding: 0;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
+    }
+
+    .gunaydin {
+      text-align: center;
+      font-size: 2rem;
+      padding: 1.5rem 1rem 0.5rem 1rem;
+      color: #ffb6c1;
+      font-weight: bold;
+      animation: fadeSlide 1.5s ease;
     }
 
     .arama-buton {
@@ -40,7 +50,7 @@
     .container {
       max-width: 600px;
       margin: 0 auto;
-      padding: 7rem 1rem 2rem 1rem;
+      padding: 2rem 1rem 2rem 1rem;
     }
 
     .form-box {
@@ -136,7 +146,6 @@
       }
     }
 
-    /* Şifreli mesaj stilleri */
     .secret-box {
       background: rgba(255, 255, 255, 0.06);
       padding: 1.5rem;
@@ -201,22 +210,25 @@
 <body>
 
   <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen basman yeterli D.</a>
+<br><br><br><br>
+  <div class="gunaydin" data-aos="zoom-in" data-aos-delay="300" data-aos-duration="1200">
+    Günaydın Dilara ☀️
+  </div>
 
-  <!-- Şifreli mesaj kutusu üstte -->
-  <div class="secret-box">
+  <!-- Şifreli mesaj kutusu -->
+  <div class="secret-box" data-aos="fade-up">
     <h2 style="color: #ffb6c1; margin-bottom: 1rem;">📩 Gizli Mesaj İçin Şifre Gir</h2>
     <input type="password" id="secretPassword" class="secret-input" placeholder="Şifreyi gir..." />
     <br />
     <button class="secret-button" onclick="checkPassword()">Göster</button>
     <div class="error" id="errorMsg"></div>
     <div class="secret-message" id="secretMessage">
-       💌<br><br>
-      
+      💌<br><br>
     </div>
   </div>
 
   <div class="container">
-    <div class="form-box">
+    <div class="form-box" data-aos="fade-up">
       <h1>istediğin zaman yazabilirsin</h1>
       <p style="color:#ccc; font-size: 0.9rem; text-align: center; margin-bottom: 1rem;">
         Bu alan sadece <strong>Dilara</strong> için açık 💬
@@ -228,49 +240,29 @@
       </form>
     </div>
 
-    <div class="card">
+    <div class="card" data-aos="fade-up">
       <h2 style="font-size: 1.5rem; margin-bottom: 1rem; text-align:center;">Sorduğun Sorular İçin Buraya Bak</h2>
       <div class="note-message">
         <strong>✨ Not:</strong> Bir şeyler yazdıysan cevabın bir süre sonra burada görünür. Arada tekrar kontrol et.
       </div>
       <div class="qa-container">
-        <div class="qa-card">
-          <div class="qa-question">"Eski bir tanıdık?"</div>
-          <div class="qa-answer">Ben anonim kalmayı tercih ediyorum, seni merak ettim.</div>
-        </div>
-        <div class="qa-card">
-          <div class="qa-question">"Ben de seni merak ettim..."</div>
-          <div class="qa-answer">Aslında biliyorsun kim olduğumu, o değildir diye ümitlenmek istemiyorsun.</div>
-        </div>
-        <div class="qa-card">
-          <div class="qa-question">"Hayır bilmiyorum söyler misin"</div>
-          <div class="qa-answer">bu bir sırr , hala sorumu cevaplamadın.</div>
-        </div>
-        <div class="qa-card">
-          <div class="qa-question">"Benim soruma cevap verdikten sonra ben de senin soruna cevap veririm"</div>
-          <div class="qa-answer">inatçılığın hala aynı, bence gizemi bozmadan devam edelim </div>
-        </div>
-        <div class="qa-card">
-          <div class="qa-question">"Gizemi bozalım söyle sen ya da daha da cevap vermeyeceğim"</div>
-          <div class="qa-answer"> merağını görebiliyorum , hic mi fikrin yok kim olduğuma dair ? birkaç isim sayabilirsin medela...</div>
-        </div>
-        <div class="qa-card">
-          <div class="qa-question">"Söyle artık"</div>
-          <div class="qa-answer"> belki de tekrar tanışmalıyız , ne dersin?</div>
-        </div>
-        <div class="qa-card">
-          <div class="qa-question">"İsmini söyle ya da cevap vermem"</div>
-          <div class="qa-answer"> ibrahim </div>
-        </div>
-        <div class="qa-card">
-          <div class="qa-question">"Anladım"</div>
-          <div class="qa-answer"> pek memnun olmadın anlaşılan, gizemi bozmamalıyız demiştim. </div>
-        </div>
+        <!-- QA kartları -->
+        <div class="qa-card"><div class="qa-question">"Eski bir tanıdık?"</div><div class="qa-answer">Ben anonim kalmayı tercih ediyorum, seni merak ettim.</div></div>
+        <div class="qa-card"><div class="qa-question">"Ben de seni merak ettim..."</div><div class="qa-answer">Aslında biliyorsun kim olduğumu, o değildir diye ümitlenmek istemiyorsun.</div></div>
+        <div class="qa-card"><div class="qa-question">"Hayır bilmiyorum söyler misin"</div><div class="qa-answer">bu bir sırr , hala sorumu cevaplamadın.</div></div>
+        <div class="qa-card"><div class="qa-question">"Benim soruma cevap verdikten sonra ben de senin soruna cevap veririm"</div><div class="qa-answer">inatçılığın hala aynı, bence gizemi bozmadan devam edelim </div></div>
+        <div class="qa-card"><div class="qa-question">"Gizemi bozalım söyle sen ya da daha da cevap vermeyeceğim"</div><div class="qa-answer"> merağını görebiliyorum , hic mi fikrin yok kim olduğuma dair ? birkaç isim sayabilirsin medela...</div></div>
+        <div class="qa-card"><div class="qa-question">"Söyle artık"</div><div class="qa-answer"> belki de tekrar tanışmalıyız , ne dersin?</div></div>
+        <div class="qa-card"><div class="qa-question">"İsmini söyle ya da cevap vermem"</div><div class="qa-answer"> ibrahim </div></div>
+        <div class="qa-card"><div class="qa-question">"Anladım"</div><div class="qa-answer"> pek memnun olmadın anlaşılan, gizemi bozmamalıyız demiştim. </div></div>
       </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script>
+    AOS.init();
+
     function checkPassword() {
       const input = document.getElementById("secretPassword").value.trim().toLowerCase();
       const messageBox = document.getElementById("secretMessage");
@@ -299,6 +291,5 @@
       console.warn("Ziyaret bildirimi gönderilemedi.");
     });
   </script>
-
 </body>
 </html>
