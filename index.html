@@ -343,6 +343,25 @@ messaging.onMessage(payload => {
   audio.play();
 });
   </script>
+
+  <script>
+// Hafif “ding” sesi – base64 olarak gömülü 🎵
+const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAB..."); // uzun base64 satırı olacak
+notifSound.volume = 0.4;
+
+// Mevcut messaging.onMessage içi:
+messaging.onMessage(payload => {
+  console.log("Yeni mesaj:", payload);
+  new Notification(payload.notification.title, {
+    body: payload.notification.body,
+    icon: "/icon.png"
+  });
+
+  if (navigator.vibrate) navigator.vibrate([100,50,100]);
+  notifSound.play().catch(() => {});
+});
+  </script>
+  
   
 
   
