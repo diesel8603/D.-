@@ -324,5 +324,58 @@ function startVoice() {
   });
 }
 </script>
+
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
+    authDomain: "live-chat-9d81c.firebaseapp.com",
+    databaseURL: "https://live-chat-9d81c-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "live-chat-9d81c",
+    storageBucket: "live-chat-9d81c.firebasestorage.app",
+    messagingSenderId: "253242248304",
+    appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  const messaging = firebase.messaging();
+
+  // VAPID KEY → Firebase Console > Project Settings > Cloud Messaging kısmından aldığın public key
+  messaging.getToken({ vapidKey: 'BURAYA_VAPID_PUBLIC_KEYİNİ_YAPIŞTIR' }).then((currentToken) => {
+    if (currentToken) {
+      console.log('Token:', currentToken);
+      // İstersen veritabanına token kaydedip kim kimle mesajlaşıyor kontrol edebilirsin
+    } else {
+      console.warn('Bildirim izni alınamadı.');
+    }
+  }).catch((err) => {
+    console.error('Token alınırken hata:', err);
+  });
+
+  messaging.onMessage((payload) => {
+    console.log('Anlık mesaj:', payload);
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      icon: '/icon.png' // varsa bildirim ikonu
+    };
+
+    new Notification(notificationTitle, notificationOptions);
+  });
+
+  // Bildirim izni iste
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Bildirim izni verildi.');
+    }
+  });
+</script>
+  
+
+  
 </body>
 </html>
