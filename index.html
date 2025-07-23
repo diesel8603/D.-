@@ -361,6 +361,36 @@ messaging.onMessage(payload => {
   notifSound.play().catch(() => {});
 });
   </script>
+
+  <script>
+// Tatlı bir “ding” sesi, base64 gömülü
+const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAAwAAAAHhAAABkG5vdGlmAAACABAAZGF0YQAAAAA=");
+
+// Ses seviyesi düşük (rahatsız etmeyen)
+notifSound.volume = 0.4;
+
+// Firebase bildirim dinleyicisi
+messaging.onMessage(payload => {
+  console.log("Yeni mesaj geldi:", payload);
+
+  // Masaüstü bildirimi
+  new Notification(payload.notification.title, {
+    body: payload.notification.body,
+    icon: "/icon.png" // Kendi ikonunla değiştirilebilir
+  });
+
+  // Titreşim (mobilde)
+  if ("vibrate" in navigator) {
+    navigator.vibrate([100, 50, 100]);
+  }
+
+  // Bildirim sesi çal
+  notifSound.play().catch(err => {
+    console.warn("Ses çalınamadı:", err);
+  });
+});
+  </script>
+  
   
   
 
