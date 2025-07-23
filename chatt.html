@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>İbrahim & Dilara Chat</title>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Orbitron', sans-serif;
+      background: #111;
+      color: white;
+      overflow: hidden;
+    }
+
+    #login {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #000;
+    }
+
+    #login input, #login button {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #222;
+      color: white;
+    }
+
+    #login input[type="file"] {
+      border: 1px dashed #444;
+    }
+
+    #chat {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+      background: #000;
+    }
+
+    #messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 12px;
+      border-radius: 12px;
+      color: white;
+      word-wrap: break-word;
+      position: relative;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .ibrahim {
+      align-self: flex-end;
+      background: rgba(255, 102, 0, 0.2);
+      border: 1px solid orange;
+      box-shadow: 0 0 10px orange;
+    }
+
+    .dilara {
+      align-self: flex-start;
+      background: rgba(255, 0, 90, 0.2);
+      border: 1px solid red;
+      box-shadow: 0 0 10px red;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      object-fit: cover;
+      position: absolute;
+      top: -10px;
+      left: -40px;
+    }
+
+    .username {
+      font-size: 12px;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    #inputArea {
+      display: flex;
+      padding: 10px;
+      background: #000;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #inputArea input[type="text"] {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      background: #1c1c1c;
+      color: white;
+    }
+
+    #inputArea button {
+      background: #222;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+    }
+
+    .image-preview {
+      max-width: 120px;
+      cursor: pointer;
+      margin-top: 5px;
+      border-radius: 8px;
+    }
+
+    #fullImageModal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    #fullImageModal img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+  </style>
+</head>
+<body>
+
+<div id="login" data-aos="fade-up">
+  <h2>Özel sohbet </h2>
+  <input id="nickname" placeholder="Nick (isim )" />
+  <input type="file" id="avatar" accept="image/*" />
+  <button onclick="enterChat()">Sohbete Gir</button>
+</div>
+
+<div id="chat">
+  <div id="messages"></div>
+  <div id="inputArea">
+    <input type="text" id="messageInput" placeholder="Mesaj yaz..." oninput="setTyping(true)"/>
+    <input type="file" id="imageInput" accept="image/*" />
+    <button onclick="sendMessage()">📨</button>
+    <button onclick="startVoice()">🎤</button>
+  </div>
+</div>
+
+<div id="fullImageModal" onclick="this.style.display='none'">
+  <img id="fullImage" src="" />
+</div>
+
+<!-- Firebase & AOS -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init();
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
+  authDomain: "live-chat-9d81c.firebaseapp.com",
+  databaseURL: "https://live-chat-9d81c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "live-chat-9d81c",
+  storageBucket: "live-chat-9d81c.firebasestorage.app",
+  messagingSenderId: "253242248304",
+  appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5",
+  measurementId: "G-LXH0JLM506"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let nickname = "";
+let avatarUrl = "";
+
+function enterChat() {
+  const name = document.getElementById("nickname").value.trim();
+  const file = document.getElementById("avatar").files[0];
+  if ((name === "İbrahim" || name === "Dilara") && file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      avatarUrl = reader.result;
+      nickname = name;
+      document.getElementById("login").style.display = "none";
+      document.getElementById("chat").style.display = "flex";
+      listenMessages();
+    };
+    reader.readAsDataURL(file);
+  } else {
+    alert("Sadece İbrahim ya da Dilara girebilir ve profil resmi seçmelisiniz.");
+  }
+}
+
+function sendMessage() {
+  const msg = document.getElementById("messageInput").value;
+  const imgFile = document.getElementById("imageInput").files[0];
+  if (!msg && !imgFile) return;
+
+  const data = {
+    name: nickname,
+    avatar: avatarUrl,
+    timestamp: Date.now()
+  };
+
+  if (msg) data.text = msg;
+
+  if (imgFile) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      data.image = reader.result;
+      db.ref("messages").push(data);
+    };
+    reader.readAsDataURL(imgFile);
+  } else {
+    db.ref("messages").push(data);
+  }
+
+  document.getElementById("messageInput").value = "";
+  document.getElementById("imageInput").value = "";
+  setTyping(false);
+}
+
+function listenMessages() {
+  db.ref("messages").on("child_added", snapshot => {
+    const m = snapshot.val();
+    const div = document.createElement("div");
+    div.className = "message " + (m.name === "İbrahim" ? "ibrahim" : "dilara");
+
+    const avatar = document.createElement("img");
+    avatar.src = m.avatar;
+    avatar.className = "avatar";
+
+    const name = document.createElement("div");
+    name.className = "username";
+    name.innerText = m.name;
+
+    div.appendChild(avatar);
+    div.appendChild(name);
+
+    if (m.text) {
+      const text = document.createElement("div");
+      text.innerText = m.text;
+      div.appendChild(text);
+    }
+
+    if (m.image) {
+      const img = document.createElement("img");
+      img.src = m.image;
+      img.className = "image-preview";
+      img.onclick = () => {
+        document.getElementById("fullImage").src = m.image;
+        document.getElementById("fullImageModal").style.display = "flex";
+      };
+      div.appendChild(img);
+    }
+
+    if (m.audio) {
+      const audio = document.createElement("audio");
+      audio.controls = true;
+      audio.src = m.audio;
+      div.appendChild(audio);
+    }
+
+    document.getElementById("messages").appendChild(div);
+    document.getElementById("messages").scrollTop = 999999;
+
+    if (m.name !== nickname) {
+      navigator.vibrate(200);
+      new Audio("https://notificationsounds.com/storage/sounds/file-sounds-1156-pristine.mp3").play();
+    }
+  });
+}
+
+function setTyping(status) {
+  db.ref("typing").set({ [nickname]: status });
+}
+
+// Sesli mesaj
+function startVoice() {
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+    const mediaRecorder = new MediaRecorder(stream);
+    let chunks = [];
+
+    mediaRecorder.ondataavailable = e => chunks.push(e.data);
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(chunks, { type: "audio/webm" });
+      const reader = new FileReader();
+      reader.onload = () => {
+        db.ref("messages").push({
+          name: nickname,
+          avatar: avatarUrl,
+          audio: reader.result,
+          timestamp: Date.now()
+        });
+      };
+      reader.readAsDataURL(blob);
+    };
+
+    mediaRecorder.start();
+    setTimeout(() => mediaRecorder.stop(), 5000); // 5 saniye kayıt
+  });
+}
+</script>
+</body>
+</html>
