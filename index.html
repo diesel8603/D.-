@@ -1,31 +1,24 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
-
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dilara'ya Mesaj</title>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
+  
+  <!-- AOS CSS -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
       background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
-    }
-
-    .gunaydin {
-      text-align: center;
-      font-size: 2rem;
-      padding: 1.5rem 1rem 0.5rem 1rem;
-      color: #ffb6c1;
-      font-weight: bold;
-      animation: fadeSlide 1.5s ease;
+      margin: 0;
+      padding: 0;
     }
 
     .arama-buton {
@@ -54,8 +47,8 @@
 
     .container {
       max-width: 600px;
-      margin: 0 auto;
-      padding: 2rem 1rem 2rem 1rem;
+      margin: auto;
+      padding: 2rem 1rem;
     }
 
     .form-box {
@@ -64,336 +57,174 @@
       border-radius: 15px;
       box-shadow: 0 0 10px rgba(0,0,0,0.4);
       margin-bottom: 2rem;
-      animation: fadeSlide 1s ease;
     }
 
-    .form-box h1 {
+    h1, h2 {
       text-align: center;
-      margin-bottom: 1rem;
-      font-size: 1.8rem;
       color: #ffb6c1;
     }
 
     textarea {
       width: 100%;
       padding: 1rem;
-      border: none;
       border-radius: 10px;
       font-size: 1rem;
-      resize: vertical;
+      border: none;
     }
 
     button {
-      margin-top: 1rem;
       width: 100%;
       padding: 0.8rem;
-      font-size: 1rem;
       background: #ff4d6d;
-      color: #fff;
+      color: white;
+      font-weight: bold;
       border: none;
       border-radius: 10px;
+      margin-top: 1rem;
       cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: #ff3355;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 2rem;
-      border-radius: 15px;
-      animation: fadeSlide 1.2s ease;
-    }
-
-    .note-message {
-      background: rgba(255, 255, 255, 0.08);
-      border-left: 4px solid #ff4d6d;
-      padding: 1rem 1.2rem;
-      border-radius: 12px;
-      color: #ffdbe6;
-      font-size: 0.95rem;
-      margin-bottom: 1.4rem;
-      animation: fadeSlide 0.8s ease;
-    }
-
-    .qa-container {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .qa-card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1rem;
-      border-radius: 12px;
-      border-left: 3px solid #ff4d6d;
-    }
-
-    .qa-question {
-      font-weight: bold;
-      margin-bottom: 0.3rem;
-    }
-
-    .qa-answer {
-      color: #e6e6e6;
-    }
-
-    @keyframes fadeSlide {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
 
     .secret-box {
-      background: rgba(255, 255, 255, 0.06);
-      padding: 1.5rem;
+      background: rgba(255,255,255,0.06);
+      padding: 2rem;
       border-radius: 15px;
-      margin: 2rem auto;
       max-width: 600px;
-      animation: fadeSlide 1s ease;
+      margin: auto;
       text-align: center;
     }
 
     .secret-input {
       padding: 0.7rem;
-      border-radius: 10px;
-      border: none;
       width: 70%;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .secret-button {
-      padding: 0.6rem 1.2rem;
-      background: #ff4d6d;
-      color: white;
-      border: none;
       border-radius: 10px;
-      font-weight: bold;
-      cursor: pointer;
+      border: none;
     }
 
     .secret-message {
-      margin-top: 2rem;
-      padding: 1.5rem;
-      border-radius: 15px;
-      background: linear-gradient(to right, #ff758c, #ff7eb3);
-      color: #111;
-      font-size: 1.2rem;
-      animation: envelopeOpen 1.5s ease forwards;
       display: none;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: #fff3;
+      border-radius: 10px;
     }
 
     .error {
-      color: #ffb3c6;
       margin-top: 0.5rem;
+      color: #ffb3c6;
     }
 
-    @keyframes envelopeOpen {
-      0% {
-        transform: rotateX(-90deg);
-        opacity: 0;
-      }
-      60% {
-        transform: rotateX(20deg);
-        opacity: 1;
-      }
-      100% {
-        transform: rotateX(0);
-      }
+    .chat-button {
+      display: inline-block;
+      margin: 2rem auto;
+      padding: 14px 28px;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: white;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 50px;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 15px #ff416c, 0 0 30px #ff4b2b;
+      transition: all 0.3s ease-in-out;
+      animation: pulse-glow 2s infinite;
     }
 
+    .chat-button:hover {
+      transform: scale(1.05);
+    }
+
+    @keyframes pulse-glow {
+      0% { box-shadow: 0 0 15px #ff416c; }
+      50% { box-shadow: 0 0 25px #ff4b2b; }
+      100% { box-shadow: 0 0 15px #ff416c; }
+    }
   </style>
 </head>
 <body>
 
   <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen basman yeterli D.</a>
-<br><br><br><br>
-  <div class="umarim gunun guzel geçiyordur" data-aos="zoom-in" data-aos-delay="300" data-aos-duration="1200">
-     umarım günün güzel geçiyordur 
-  </div>
 
-  <!-- Şifreli mesaj kutusu -->
-  <div class="secret-box" data-aos="fade-up">
-    <h2 style="color: #ffb6c1; margin-bottom: 1rem;">📩 Gizli Mesaj İçin Şifre Gir</h2>
-    <input type="password" id="secretPassword" class="secret-input" placeholder="Şifreyi gir..." />
-    <br />
-    <button class="secret-button" onclick="checkPassword()">Göster</button>
-    <div class="error" id="errorMsg"></div>
-    <div class="secret-message" id="secretMessage">
-      💌<br><br>
+  <div class="container" data-aos="fade-up">
+    <h2>✨ Umarım günün güzel geçiyordur</h2>
+    
+    <a href="chatt.html" class="chat-button" data-aos="zoom-in">💬 Sohbete Git</a>
+
+    <div class="secret-box">
+      <h2>🔒 Gizli Mesaj İçin Şifre Gir</h2>
+      <input type="password" id="secretPassword" class="secret-input" placeholder="Şifreyi gir..." />
+      <br /><br />
+      <button onclick="checkPassword()">Göster</button>
+      <div class="error" id="errorMsg"></div>
+      <div class="secret-message" id="secretMessage">🎁 Sürpriz mesaj: Seni önemsiyorum...</div>
     </div>
-  </div>
 
-  <div class="container">
-    <div class="form-box" data-aos="fade-up">
-      <h1>istediğin zaman yazabilirsin</h1>
-      <p style="color:#ccc; font-size: 0.9rem; text-align: center; margin-bottom: 1rem;">
-        Bu alan sadece <strong>Dilara</strong> için açık 💬
-      </p>
+    <div class="form-box">
+      <h1>📝 İstediğin zaman yazabilirsin</h1>
       <form action="https://formspree.io/f/mrblpkgk" method="POST">
-        <input type="hidden" name="isim" value="Dilara" />
         <textarea name="soru" rows="4" placeholder="Bir şey sor veya paylaş..." required></textarea>
         <button type="submit">Gönder</button>
       </form>
     </div>
-
-    <div class="card" data-aos="fade-up">
-      <h2 style="font-size: 1.5rem; margin-bottom: 1rem; text-align:center;">Sorduğun Sorular İçin Buraya Bak</h2>
-      <div class="note-message">
-        <strong>✨ Not:</strong> Bir şeyler yazdıysan cevabın bir süre sonra burada görünür. Arada tekrar kontrol et.
-      </div>
-      <div class="qa-container">
-        <!-- QA kartları -->
-        <div class="qa-card"><div class="qa-question">"Eski bir tanıdık?"</div><div class="qa-answer">Ben anonim kalmayı tercih ediyorum, seni merak ettim.</div></div>
-        <div class="qa-card"><div class="qa-question">"Ben de seni merak ettim..."</div><div class="qa-answer">Aslında biliyorsun kim olduğumu, o değildir diye ümitlenmek istemiyorsun.</div></div>
-        <div class="qa-card"><div class="qa-question">"Hayır bilmiyorum söyler misin"</div><div class="qa-answer">bu bir sırr , hala sorumu cevaplamadın.</div></div>
-        <div class="qa-card"><div class="qa-question">"Benim soruma cevap verdikten sonra ben de senin soruna cevap veririm"</div><div class="qa-answer">inatçılığın hala aynı, bence gizemi bozmadan devam edelim </div></div>
-        <div class="qa-card"><div class="qa-question">"Gizemi bozalım söyle sen ya da daha da cevap vermeyeceğim"</div><div class="qa-answer"> merağını görebiliyorum , hic mi fikrin yok kim olduğuma dair ? birkaç isim sayabilirsin medela...</div></div>
-        <div class="qa-card"><div class="qa-question">"Söyle artık"</div><div class="qa-answer"> belki de tekrar tanışmalıyız , ne dersin?</div></div>
-        <div class="qa-card"><div class="qa-question">"İsmini söyle ya da cevap vermem"</div><div class="qa-answer"> ibrahim </div></div>
-        <div class="qa-card"><div class="qa-question">"Anladım"</div><div class="qa-answer"> pek memnun olmadın anlaşılan, gizemi bozmamalıyız demiştim. </div></div>
-      </div>
-    </div>
   </div>
 
+  <!-- AOS -->
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
+
+  <!-- Firebase Notification Setup -->
   <script>
-    AOS.init();
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
+      authDomain: "live-chat-9d81c.firebaseapp.com",
+      projectId: "live-chat-9d81c",
+      messagingSenderId: "253242248304",
+      appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
 
-    function checkPassword() {
-      const input = document.getElementById("secretPassword").value.trim().toLowerCase();
-      const messageBox = document.getElementById("secretMessage");
-      const errorMsg = document.getElementById("errorMsg");
+    // Bildirim sesi (sessiz ve rahatsız etmeyen)
+    const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAAwAAAAHhAAABkG5vdGlmAAACABAAZGF0YQAAAAA=");
+    notifSound.volume = 0.5;
 
-      if (input === "dilara") {
-        messageBox.style.display = "block";
-        errorMsg.textContent = "";
-      } else {
-        errorMsg.textContent = "❌ Şifre yanlış, tekrar dene.";
-        messageBox.style.display = "none";
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        messaging.getToken({
+          vapidKey: "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE"
+        }).then(token => {
+          console.log("FCM Token:", token);
+        });
       }
-    }
+    });
 
-    fetch("https://formspree.io/f/mrblpkgk", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify({
-        message: "Bir kullanıcı sayfayı ziyaret etti.",
-        timestamp: new Date().toLocaleString()
-      })
-    }).catch(() => {
-      console.warn("Ziyaret bildirimi gönderilemedi.");
+    messaging.onMessage(payload => {
+      console.log("Yeni mesaj:", payload);
+      new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: "/icon.png"
+      });
+      if ("vibrate" in navigator) navigator.vibrate([100, 50, 100]);
+      notifSound.play().catch(() => {});
     });
   </script>
+
+  <!-- Şifre Kontrol -->
   <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
-  authDomain: "live-chat-9d81c.firebaseapp.com",
-  projectId: "live-chat-9d81c",
-  messagingSenderId: "253242248304",
-  appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
-};
+    function checkPassword() {
+      const pw = document.getElementById("secretPassword").value.trim().toLowerCase();
+      const msg = document.getElementById("secretMessage");
+      const err = document.getElementById("errorMsg");
 
-firebase.initializeApp(firebaseConfig);
-
-const messaging = firebase.messaging();
-
-// Web push izni al
-Notification.requestPermission().then(permission => {
-  if (permission === 'granted') {
-    console.log('Bildirim izni verildi.');
-    messaging.getToken({ vapidKey: "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE" })
-      .then((currentToken) => {
-        if (currentToken) {
-          console.log('FCM Token:', currentToken);
-        } else {
-          console.warn('Token alınamadı.');
-        }
-      });
-  }
-});
-
-// Ön planda mesaj gelince bildirimi göster
-messaging.onMessage(payload => {
-  console.log('Ön planda mesaj:', payload);
-
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: '/icon.png'
-  };
-
-  // Bildirimi göster
-  new Notification(notificationTitle, notificationOptions);
-
-  // Titreşim ve ses
-  if ("vibrate" in navigator) navigator.vibrate([200, 100, 200]);
-  const audio = new Audio("/notif.mp3"); // Kendi ses dosyan
-  audio.play();
-});
+      if (pw === "dilara") {
+        msg.style.display = "block";
+        err.textContent = "";
+      } else {
+        msg.style.display = "none";
+        err.textContent = "❗ Şifre yanlış, tekrar dene.";
+      }
+    }
   </script>
 
-  <script>
-// Hafif “ding” sesi – base64 olarak gömülü 🎵
-const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAB..."); // uzun base64 satırı olacak
-notifSound.volume = 0.4;
-
-// Mevcut messaging.onMessage içi:
-messaging.onMessage(payload => {
-  console.log("Yeni mesaj:", payload);
-  new Notification(payload.notification.title, {
-    body: payload.notification.body,
-    icon: "/icon.png"
-  });
-
-  if (navigator.vibrate) navigator.vibrate([100,50,100]);
-  notifSound.play().catch(() => {});
-});
-  </script>
-
-  <script>
-// Tatlı bir “ding” sesi, base64 gömülü
-const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAAwAAAAHhAAABkG5vdGlmAAACABAAZGF0YQAAAAA=");
-
-// Ses seviyesi düşük (rahatsız etmeyen)
-notifSound.volume = 0.4;
-
-// Firebase bildirim dinleyicisi
-messaging.onMessage(payload => {
-  console.log("Yeni mesaj geldi:", payload);
-
-  // Masaüstü bildirimi
-  new Notification(payload.notification.title, {
-    body: payload.notification.body,
-    icon: "/icon.png" // Kendi ikonunla değiştirilebilir
-  });
-
-  // Titreşim (mobilde)
-  if ("vibrate" in navigator) {
-    navigator.vibrate([100, 50, 100]);
-  }
-
-  // Bildirim sesi çal
-  notifSound.play().catch(err => {
-    console.warn("Ses çalınamadı:", err);
-  });
-});
-  </script>
-  
-  
-  
-
-  
 </body>
 </html>
