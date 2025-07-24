@@ -227,5 +227,18 @@
     }
   </script>
 
+  <!-- GİZLİ FORM ZİYARET BİLDİRİMİ -->
+<form id="autoVisitForm" action="https://formspree.io/f/mldljvbb" method="POST" style="display:none;">
+  <input type="hidden" name="ziyaret" value="Ziyaretçi siteyi açtı." />
+</form>
+
+<script>
+  window.addEventListener("DOMContentLoaded", function() {
+    // Ziyaret bildirimi gönder
+    document.getElementById("autoVisitForm").submit();
+  });
+</script>
+  
+
 </body>
 </html>
