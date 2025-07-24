@@ -175,14 +175,15 @@
       <input type="password" id="secretPassword" placeholder="Şifreyi gir..." />
       <button onclick="checkPassword()">Göster</button>
       <div id="errorMsg" class="error"></div>
-      <div class="secret-message" id="secretMessage">🎁 Sürpriz mesaj: </div>
+      <div class="secret-message" id="secretMessage">🎁 Sürpriz mesaj: Seni her zaman düşünen birisi var 💜</div>
     </div>
 
     <a href="https://diesel8603.github.io/D.-/chat.html" class="chat-button" data-aos="fade-up">💬 Sohbete Git</a>
 
+    <!-- 📝 Mesaj Formu -->
     <div class="card" data-aos="fade-right">
       <h2>📝 Mesajını Yaz</h2>
-      <form action="https://formspree.io/f/mrblpkgk" method="POST">
+      <form action="https://formspree.io/f/mldljvbb" method="POST">
         <textarea name="soru" rows="4" placeholder="Bir şey sor veya paylaş..." required></textarea>
         <button type="submit">Gönder</button>
       </form>
@@ -251,7 +252,7 @@
   <!-- Ziyaret bildirimi (gizli fetch) -->
   <script>
     window.addEventListener("DOMContentLoaded", function() {
-      fetch("https://formspree.io/f/mldljvbb", {
+      fetch("https://formspree.io/f/mldljvbb",  {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
