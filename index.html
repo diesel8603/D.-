@@ -1,250 +1,263 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dilara'ya Mesaj</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dilara'ya Mesaj</title>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
-  
-  <!-- AOS CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
 
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      margin: 0;
-      padding: 0;
-    }
+  <!-- AOS -->
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
 
-    .arama-buton {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #ff4081, #ff80ab);
-      color: white;
-      font-weight: bold;
-      font-size: 15px;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-      animation: pulse 1.8s infinite;
-      z-index: 999;
-      text-decoration: none;
-    }
+  <!-- Stil -->
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+    }
 
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 2rem 1rem;
-    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-    .form-box {
-      background: rgba(255, 255, 255, 0.06);
-      padding: 2rem;
-      border-radius: 15px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.4);
-      margin-bottom: 2rem;
-    }
+    .header {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
 
-    h1, h2 {
-      text-align: center;
-      color: #ffb6c1;
-    }
+    .header h1 {
+      font-size: 2rem;
+      color: #ffcdd2;
+      margin-bottom: 0.5rem;
+    }
 
-    textarea {
-      width: 100%;
-      padding: 1rem;
-      border-radius: 10px;
-      font-size: 1rem;
-      border: none;
-    }
+    .header p {
+      font-size: 1.1rem;
+      color: #eee;
+    }
 
-    button {
-      width: 100%;
-      padding: 0.8rem;
-      background: #ff4d6d;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      margin-top: 1rem;
-      cursor: pointer;
-    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      padding: 1rem;
+    }
 
-    .secret-box {
-      background: rgba(255,255,255,0.06);
-      padding: 2rem;
-      border-radius: 15px;
-      max-width: 600px;
-      margin: auto;
-      text-align: center;
-    }
+    .card {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1.5rem;
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
 
-    .secret-input {
-      padding: 0.7rem;
-      width: 70%;
-      border-radius: 10px;
-      border: none;
-    }
+    .card h2 {
+      text-align: center;
+      color: #ffb6c1;
+      margin-bottom: 1rem;
+    }
 
-    .secret-message {
-      display: none;
-      margin-top: 1.5rem;
-      padding: 1rem;
-      background: #fff3;
-      border-radius: 10px;
-    }
+    textarea, input[type="password"] {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 10px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
 
-    .error {
-      margin-top: 0.5rem;
-      color: #ffb3c6;
-    }
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 10px;
+      background: #ff4d6d;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-    .chat-button {
-      display: inline-block;
-      margin: 2rem auto;
-      padding: 14px 28px;
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
-      color: white;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 50px;
-      text-decoration: none;
-      text-align: center;
-      box-shadow: 0 0 15px #ff416c, 0 0 30px #ff4b2b;
-      transition: all 0.3s ease-in-out;
-      animation: pulse-glow 2s infinite;
-    }
+    button:hover {
+      background: #ff3355;
+    }
 
-    .chat-button:hover {
-      transform: scale(1.05);
-    }
+    .error {
+      color: #ffb3c6;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
 
-    @keyframes pulse-glow {
-      0% { box-shadow: 0 0 15px #ff416c; }
-      50% { box-shadow: 0 0 25px #ff4b2b; }
-      100% { box-shadow: 0 0 15px #ff416c; }
-    }
-  </style>
+    .secret-message {
+      display: none;
+      margin-top: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .arama-buton {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 16px;
+      background: linear-gradient(135deg, #ff4081, #ff80ab);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 14px;
+      z-index: 999;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .chat-button {
+      display: block;
+      width: 100%;
+      text-align: center;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      padding: 14px;
+      font-weight: bold;
+      border-radius: 50px;
+      margin-top: 1rem;
+      box-shadow: 0 0 15px #ff416c, 0 0 30px #ff4b2b;
+      transition: 0.3s ease;
+    }
+
+    .chat-button:hover {
+      transform: scale(1.05);
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        padding: 1rem 0.5rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
-  <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen basman yeterli D.</a>
+  <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen</a>
 
-  <div class="container" data-aos="fade-up">
-    <h2>✨ Umarım günün güzel geçiyordur</h2>
-    
-    <a href="https://diesel8603.github.io/D.-/chat.html" class="chat-button">💬 Sohbete Git</a>
-    
+  <div class="header">
+    <h1>✨</h1>
+    <p></p>
+  </div>
 
-    <div class="secret-box">
-      <h2>🔒 Gizli Mesaj İçin Şifre Gir</h2>
-      <input type="password" id="secretPassword" class="secret-input" placeholder="Şifreyi gir..." />
-      <br /><br />
-      <button onclick="checkPassword()">Göster</button>
-      <div class="error" id="errorMsg"></div>
-      <div class="secret-message" id="secretMessage">🎁 Sürpriz mesaj: Seni önemsiyorum...</div>
-    </div>
+  <div class="container" data-aos="fade-up">
 
-    <div class="form-box">
-      <h1>📝 İstediğin zaman yazabilirsin</h1>
-      <form action="https://formspree.io/f/mrblpkgk" method="POST">
-        <textarea name="soru" rows="4" placeholder="Bir şey sor veya paylaş..." required></textarea>
-        <button type="submit">Gönder</button>
-      </form>
-    </div>
-  </div>
+    <div class="card">
+      <h2>🔒 Gizli Mesaj</h2>
+      <input type="password" id="secretPassword" placeholder="Şifreyi gir..." />
+      <button onclick="checkPassword()">Göster</button>
+      <div id="errorMsg" class="error"></div>
+      <div class="secret-message" id="secretMessage">🎁 Sürpriz mesaj: Seni önemsiyorum...</div>
+    </div>
 
-  <!-- AOS -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init();</script>
+    <a href="https://diesel8603.github.io/D.-/chat.html" class="chat-button">💬 Sohbete Git</a>
 
-  <!-- Firebase Notification Setup -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
-      authDomain: "live-chat-9d81c.firebaseapp.com",
-      projectId: "live-chat-9d81c",
-      messagingSenderId: "253242248304",
-      appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
+    <div class="card">
+      <h2>📝 Mesajını Yaz</h2>
+      <form action="https://formspree.io/f/mrblpkgk" method="POST">
+        <textarea name="soru" rows="4" placeholder="Bir şey sor veya paylaş..." required></textarea>
+        <button type="submit">Gönder</button>
+      </form>
+    </div>
 
-    const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAAwAAAAHhAAABkG5vdGlmAAACABAAZGF0YQAAAAA=");
-    notifSound.volume = 0.5;
+  </div>
 
-    Notification.requestPermission().then(permission => {
-      if (permission === 'granted') {
-        messaging.getToken({
-          vapidKey: "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE"
-        }).then(token => {
-          console.log("FCM Token:", token);
-        });
-      }
-    });
+  <!-- AOS -->
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init();</script>
 
-    messaging.onMessage(payload => {
-      console.log("Yeni mesaj:", payload);
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: "/icon.png"
-      });
-      if ("vibrate" in navigator) navigator.vibrate([100, 50, 100]);
-      notifSound.play().catch(() => {});
-    });
-  </script>
+  <!-- Şifre kontrol -->
+  <script>
+    function checkPassword() {
+      const pw = document.getElementById("secretPassword").value.trim().toLowerCase();
+      const msg = document.getElementById("secretMessage");
+      const err = document.getElementById("errorMsg");
 
-  <!-- Şifre Kontrol -->
-  <script>
-    function checkPassword() {
-      const pw = document.getElementById("secretPassword").value.trim().toLowerCase();
-      const msg = document.getElementById("secretMessage");
-      const err = document.getElementById("errorMsg");
+      if (pw === "dilara") {
+        msg.style.display = "block";
+        err.textContent = "";
+      } else {
+        msg.style.display = "none";
+        err.textContent = "❗ Şifre yanlış, tekrar dene.";
+      }
+    }
+  </script>
 
-      if (pw === "dilara") {
-        msg.style.display = "block";
-        err.textContent = "";
-      } else {
-        msg.style.display = "none";
-        err.textContent = "❗ Şifre yanlış, tekrar dene.";
-      }
-    }
-  </script>
+  <!-- Firebase Bildirim -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
+      authDomain: "live-chat-9d81c.firebaseapp.com",
+      projectId: "live-chat-9d81c",
+      messagingSenderId: "253242248304",
+      appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
+    };
 
-  <!-- GİZLİ FETCH ZİYARET BİLDİRİMİ -->
-  <script>
-    window.addEventListener("DOMContentLoaded", function() {
-      fetch("https://formspree.io/f/mldljvbb", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({
-          ziyaret: "Ziyaretçi siteyi açtı."
-        })
-      }).then(response => {
-        console.log("Ziyaret bildirimi gönderildi.");
-      }).catch(error => {
-        console.error("Gönderim hatası:", error);
-      });
-    });
-  </script>
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAAwAAAAHhAAABkG5vdGlmAAACABAAZGF0YQAAAAA=");
+    notifSound.volume = 0.5;
+
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        messaging.getToken({
+          vapidKey: "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE"
+        }).then(token => {
+          console.log("FCM Token:", token);
+        });
+      }
+    });
+
+    messaging.onMessage(payload => {
+      console.log("Yeni mesaj:", payload);
+      new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: "/icon.png"
+      });
+      if ("vibrate" in navigator) navigator.vibrate([100, 50, 100]);
+      notifSound.play().catch(() => {});
+    });
+  </script>
+
+  <!-- Ziyaret bildirimi (gizli fetch) -->
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      fetch("https://formspree.io/f/mldljvbb", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          ziyaret: "Ziyaretçi siteyi açtı."
+        })
+      }).then(() => {
+        console.log("Ziyaret bildirimi gönderildi.");
+      }).catch(err => {
+        console.error("Ziyaret bildirimi hatası:", err);
+      });
+    });
+  </script>
 
 </body>
 </html>
