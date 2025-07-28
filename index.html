@@ -187,6 +187,33 @@
         <textarea name="soru" rows="4" placeholder="Bir şey sor veya paylaş..." required></textarea>
         <button type="submit">Gönder</button>
       </form>
+      <!-- 📸 Galeri ve Dosya Yükleme -->
+<div class="card" data-aos="fade-left">
+  <h2>📸 Fotoğraf Galerisi</h2>
+  <input type="file" id="imageUpload" accept="image/*" style="margin-bottom: 1rem;" />
+  <div class="gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;"></div>
+</div>
+
+<script>
+  document.getElementById("imageUpload").addEventListener("change", function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.createElement("img");
+      img.src = e.target.result;
+      img.alt = "Yüklenen Görsel";
+      img.setAttribute("data-aos", "zoom-in");
+      img.style.width = "100%";
+      img.style.borderRadius = "10px";
+      img.style.boxShadow = "0 0 10px rgba(255,255,255,0.2)";
+      document.querySelector(".gallery").appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+</script>
+
     </div>
 
   </div>
