@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+	<!-- AOS animasyon kütüphanesi -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dilara</title>
@@ -157,6 +160,55 @@
         padding: 1rem 0.5rem;
       }
     }
+    
+    <style>
+  .countdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .time-box {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    min-width: 70px;
+    text-align: center;
+  }
+  .number {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #e91e63;
+  }
+  .label {
+    font-size: 0.9em;
+    color: #666;
+  }
+  #message-section button {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background: #ff4081;
+    color: white;
+    border: none;
+    border-radius: 8px;
+  }
+  #message-section input {
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  #secret-message {
+    margin-top: 20px;
+    background: #fff3f3;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1.2em;
+  }
+</style>
+
   </style>
 </head>
 <body>
@@ -167,6 +219,37 @@
     <h1 data-aos="zoom-in">Günaydınn miss kokuluu 👸<br> Diloooomm</h1>
     <p data-aos="fade-up"></p>
   </div>
+  <h2>prensesimin doğum gününe kalan zaman </h2>
+<div class="countdown">
+  <div class="time-box" id="daysBox" data-aos="flip-down">
+    <div class="number" id="days">--</div>
+    <div class="label">Gün</div>
+  </div>
+  <div class="time-box" id="hoursBox" data-aos="flip-down">
+    <div class="number" id="hours">--</div>
+    <div class="label">Saat</div>
+  </div>
+  <div class="time-box" id="minutesBox" data-aos="flip-down">
+    <div class="number" id="minutes">--</div>
+    <div class="label">Dakika</div>
+  </div>
+  <div class="time-box" id="secondsBox" data-aos="flip-down">
+    <div class="number" id="seconds">--</div>
+    <div class="label">Saniye</div>
+  </div>
+</div>
+
+<div id="message-section">
+  <button onclick="showPasswordPrompt()">Mesajı Gör</button>
+  <div id="passwordPrompt" style="display:none;">
+    <input type="password" id="passwordInput" placeholder="Şifreyi gir..." />
+    <button onclick="checkPassword()">Göster</button>
+  </div>
+  <div id="secret-message" style="display:none;">
+    🎂 Doğum günün kutlu olsun! Seninle her şey daha güzel 💖
+  </div>
+</div>
+
 
   <div class="container" data-aos="fade-up">
 
@@ -315,6 +398,75 @@
       });
     });
   </script>
+  
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+
+  const targetDate = new Date("2025-09-06T00:00:00").getTime();
+  let lastTime = {};
+
+  function updateCountdown() {
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+
+    if (distance < 0) {
+      document.querySelector(".countdown").innerHTML = "🎉 Doğum günü geldi!";
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((distance / (1000 * 60)) % 60);
+    const seconds = Math.floor((distance / 1000) % 60);
+
+    animateIfChanged("days", days);
+    animateIfChanged("hours", hours);
+    animateIfChanged("minutes", minutes);
+    animateIfChanged("seconds", seconds);
+  }
+
+  function animateIfChanged(id, value) {
+    const el = document.getElementById(id);
+    if (lastTime[id] !== value) {
+      el.innerText = value;
+      const box = document.getElementById(id + "Box");
+      box.setAttribute("data-aos", "flip-down");
+      box.classList.remove("aos-animate");
+      void box.offsetWidth;
+      box.classList.add("aos-animate");
+    }
+    lastTime[id] = value;
+  }
+
+  setInterval(updateCountdown, 1000);
+
+  function showPasswordPrompt() {
+    if (localStorage.getItem("access_granted") === "true") {
+      document.getElementById("secret-message").style.display = "block";
+    } else {
+      document.getElementById("passwordPrompt").style.display = "block";
+    }
+  }
+
+  function checkPassword() {
+    const input = document.getElementById("passwordInput").value;
+    if (input === "06092025") {
+      document.getElementById("secret-message").style.display = "block";
+      document.getElementById("passwordPrompt").style.display = "none";
+      localStorage.setItem("access_granted", "true");
+    } else {
+      alert("Şifre yanlış!");
+    }
+  }
+
+  window.onload = () => {
+    if (localStorage.getItem("access_granted") === "true") {
+      document.getElementById("secret-message").style.display = "block";
+    }
+  };
+</script>
+
 
 </body>
-</html>
+          </html>
