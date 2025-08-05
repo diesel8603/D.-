@@ -565,15 +565,15 @@
 
     let message = "", emoji = "", colorClass = "";
 
-    if (hour >= 5 && hour <= 14) {
+    if (hour >= 5 && hour < 12) {
       message = `Günaydın prensesimm <br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
       emoji = "🌞";
       colorClass = "color-morning";
-    } else if (hour > 14 && hour <= 18) {
+    } else if (hour >= 12 && hour < 18) {
       message = `Günün senin kadar güzel geçsin dilom <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
       emoji = "☀️";
       colorClass = "color-day";
-    } else if (hour > 18 && hour <= 22) {
+    } else if (hour >= 18 && hour < 22) {
       message = `İyi akşamlar güzelim <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
       emoji = "🌇";
       colorClass = "color-evening";
@@ -592,10 +592,11 @@
 
     setTimeout(() => {
       popup.style.animation = "fadeOutScale 1s ease forwards";
-    }, 13000); // 13 saniye sonra kaybolur
+    }, 13000);
   });
 </script>
 
+
 </body>
           </html>
-
+          
