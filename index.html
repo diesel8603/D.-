@@ -210,14 +210,93 @@
 </style>
 
   </style>
+  
+  
+<!-- Stil (Popup için) -->
+<style>
+  #gunaydinPopup {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    padding: 25px 45px;
+    border-radius: 20px;
+    font-size: 1.6rem;
+    text-align: center;
+    max-width: 90%;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    backdrop-filter: blur(12px);
+    transition: all 0.5s ease;
+  }
+
+  .popup-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+  }
+
+  .emoji {
+    font-size: 2.5rem;
+    animation: pulseEmoji 1.2s infinite alternate ease-in-out;
+  }
+
+  @keyframes pulseEmoji {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+  }
+
+  .color-morning {
+    background: rgba(255, 180, 255, 0.2);
+    box-shadow: 0 0 20px #ff69b4, 0 0 40px #e75480;
+    color: #ffe0f5;
+  }
+
+  .color-day {
+    background: rgba(173, 216, 230, 0.2);
+    box-shadow: 0 0 20px #00bfff, 0 0 40px #1e90ff;
+    color: #e0f7ff;
+  }
+
+  .color-evening {
+    background: rgba(255, 140, 0, 0.15);
+    box-shadow: 0 0 20px #ffa500, 0 0 40px #ff8c00;
+    color: #fff3e0;
+  }
+
+  .color-night {
+    background: rgba(25, 25, 112, 0.3);
+    box-shadow: 0 0 20px #4169e1, 0 0 40px #8a2be2;
+    color: #dcdcff;
+  }
+
+  @keyframes fadeInScale {
+    0% { opacity: 0; transform: translateX(-50%) scale(0.9); }
+    100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  }
+
+  @keyframes fadeOutScale {
+    0% { opacity: 1; transform: translateX(-50%) scale(1); }
+    100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
+  }
+
+  @media (max-width: 600px) {
+    #gunaydinPopup { font-size: 1.1rem; padding: 15px 25px; }
+    .emoji { font-size: 2rem; }
+  }
+</style>
+
 </head>
 <body>
+	<div id="gunaydinPopup" role="alert" aria-live="polite"></div>
+	
 
   <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen</a>
 
   <div class="header" data-aos="fade-down">
     <h1 data-aos="zoom-in"><br> sitene hoş geldin bitanecik dilomm</h1><br>
-    <p data-aos="fade-up">günaydın prenses 👸</p>
+    
   </div>
   <h2> prensesimin doğum gününe kalan zaman </h2>
 <div class="countdown">
@@ -466,9 +545,57 @@
     }
   };
 </script>
+<!-- AOS Script -->
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+  AOS.init({ duration: 1000, once: true });
+</script>
 
+
+<script>
+  window.addEventListener("load", () => {
+    const popup = document.getElementById("gunaydinPopup");
+    const now = new Date();
+    const hour = now.getHours();
+    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+    const dayName = days[now.getDay()];
+    const date = now.getDate();
+    const month = now.toLocaleString("tr-TR", { month: "long" });
+
+    let message = "", emoji = "", colorClass = "";
+
+    if (hour >= 5 && hour <= 14) {
+      message = `Günaydın prensesimm <br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+      emoji = "🌞";
+      colorClass = "color-morning";
+    } else if (hour > 14 && hour <= 18) {
+      message = `Günün senin kadar güzel geçsin dilom <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+      emoji = "☀️";
+      colorClass = "color-day";
+    } else if (hour > 18 && hour <= 22) {
+      message = `İyi akşamlar güzelim <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+      emoji = "🌇";
+      colorClass = "color-evening";
+    } else {
+      message = `İyi geceler tatlı rüyalar diloom <br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+      emoji = "🌙";
+      colorClass = "color-night";
+    }
+
+    popup.innerHTML = `<div class="popup-content">
+      <div class="emoji">${emoji}</div>
+      <div>${message}</div>
+    </div>`;
+    popup.classList.add(colorClass);
+    popup.style.animation = "fadeInScale 1s ease forwards";
+
+    setTimeout(() => {
+      popup.style.animation = "fadeOutScale 1s ease forwards";
+    }, 13000); // 13 saniye sonra kaybolur
+  });
+</script>
 
 </body>
           </html>
-
 
