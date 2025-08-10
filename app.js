@@ -20,24 +20,33 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("/firebase-messaging-sw.js");
 }
 
+function logToPage(msg) {
+  const logDiv = document.getElementById("log");
+  if (logDiv) {
+    logDiv.textContent += msg + "\n";
+  }
+}
+
 // Bildirim izni al
 async function requestPermission() {
   const permission = await Notification.requestPermission();
+  logToPage("İzin durumu: " + permission);
   if (permission === "granted") {
-    const token = await getToken(messaging, { vapidKey: "BGLcs27oqoz_XthD4-LQL-cWhGe9S3N3r1u9R04PzaGx0LBErzn5kg_564D2840-w3n8pPP76-OX2Qa2ruyXLgY" });
-    console.log("FCM Token:", token);
-    // Token’ı backend’e kaydet
-    await fetch("/register-token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
+    try {
+      const token = await getToken(messaging, { vapidKey: "BGLcs27oqoz_XthD4-LQL-cWhGe9S3N3r1u9R04PzaGx0LBErzn5kg_564D2840-w3n8pPP76-OX2Qa2ruyXLgY" });
+      logToPage("FCM Token: " + token);
+      // Burada token'ı backend'e gönderme işlemi yapılacak
+    } catch (err) {
+      logToPage("Token alma hatası: " + err);
+    }
+  } else {
+    logToPage("Bildirim izni verilmedi.");
   }
 }
 
 requestPermission();
 
-// Uygulama açıkken gelen bildirim
+// Uygulama açıkken gelen bildirimleri dinle
 onMessage(messaging, payload => {
-  console.log("Bildirim alındı:", payload);
+  logToPage("Bildirim alındı: " + JSON.stringify(payload));
 });
