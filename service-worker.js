@@ -1,10 +1,10 @@
 const CACHE_NAME = "pwaa-cache-v1";
 const urlsToCache = [
   "/",
-  "index.html",
-  "manifest.json",
-  "app.js",
-  "style.css"
+  "/index.html",
+  "/manifest.json",
+  "/app.js",
+  "/style.css"
 ];
 
 // Kurulumda önbelleğe al
@@ -51,4 +51,5 @@ self.addEventListener("notificationclick", event => {
     clients.openWindow(event.notification.data.url)
   );
 });
+
 
