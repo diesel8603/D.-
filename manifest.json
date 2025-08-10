@@ -1,7 +1,7 @@
 {
   "name": "Dilara'ya Özel Uygulama",
   "short_name": "DilaraApp",
-  "start_url": "index.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ff4d6d",
@@ -19,4 +19,5 @@
     }
   ]
 }
+
 
