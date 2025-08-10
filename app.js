@@ -14,6 +14,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+// Service worker kaydı
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/service-worker.js");
+  navigator.serviceWorker.register("/firebase-messaging-sw.js");
+}
+
 function logToPage(msg) {
   const logDiv = document.getElementById("log");
   if (logDiv) {
@@ -21,42 +27,26 @@ function logToPage(msg) {
   }
 }
 
-// Service worker kaydı
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/service-worker.js")
-    .then(() => logToPage("Service worker kaydedildi."))
-    .catch(err => logToPage("Service worker kaydı hatası: " + err));
-
-  navigator.serviceWorker.register("/firebase-messaging-sw.js")
-    .then(() => logToPage("Firebase messaging sw kaydedildi."))
-    .catch(err => logToPage("Firebase messaging sw kaydı hatası: " + err));
-}
-
+// Bildirim izni al
 async function requestPermission() {
   const permission = await Notification.requestPermission();
   logToPage("İzin durumu: " + permission);
   if (permission === "granted") {
     try {
-      const token = await getToken(messaging, {
-        vapidKey: "BGLcs27oqoz_XthD4-LQL-cWhGe9S3N3r1u9R04PzaGx0LBErzn5kg_564D2840-w3n8pPP76-OX2Qa2ruyXLgY"
-      });
+      const token = await getToken(messaging, { vapidKey: "BGLcs27oqoz_XthD4-LQL-cWhGe9S3N3r1u9R04PzaGx0LBErzn5kg_564D2840-w3n8pPP76-OX2Qa2ruyXLgY" });
       logToPage("FCM Token: " + token);
-      // Token'ı backend'e gönderme burada olacak
-    } catch (e) {
-      logToPage("Token alma hatası: " + e);
+      // Burada token'ı backend'e gönderme işlemi yapılacak
+    } catch (err) {
+      logToPage("Token alma hatası: " + err);
     }
   } else {
     logToPage("Bildirim izni verilmedi.");
   }
 }
 
-// Sayfadaki butona tıklanınca izin iste
-document.getElementById("notify-btn").addEventListener("click", () => {
-  requestPermission();
-});
+requestPermission();
 
 // Uygulama açıkken gelen bildirimleri dinle
 onMessage(messaging, payload => {
   logToPage("Bildirim alındı: " + JSON.stringify(payload));
 });
-    
