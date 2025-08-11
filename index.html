@@ -2,6 +2,15 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+
+<!-- AOS CSS -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<!-- AOS JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+
 	<!-- AOS animasyon kütüphanesi -->
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 
@@ -208,7 +217,33 @@
     border-radius: 10px;
     font-size: 1.2em;
   }
+  
+  .glass-neon-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    padding: 15px 40px;
+    border-radius: 50px;
+    color: #fff;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.glass-neon-btn:hover {
+    box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+    transform: scale(1.05);
+}
+
 </style>
+
+
+
 
   </style>
   
@@ -297,7 +332,15 @@
 
   <div class="header" data-aos="fade-down">
     <h1 data-aos="zoom-in"><br> sitene hoş geldin bitanecik sevgilimm</h1><br>
-    
+    <br><br>
+    	
+    <a href="popup.html" 
+   class="glass-neon-btn" 
+   data-aos="zoom-in" 
+   data-aos-duration="1000">
+   Sayfaya Git
+</a>
+
   </div>
   <h2> prensesimin doğum gününe kalan zaman </h2>
 <div class="countdown">
@@ -603,4 +646,4 @@
 
 	
 
-
+	
