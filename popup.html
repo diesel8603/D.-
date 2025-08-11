@@ -3,164 +3,285 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>sevgilimle özel günlerimiz </title>
+  <title>Sevgilimle Özel Günlerimiz</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --bg:#0f0c12;
+    :root {
+      --bg: #0f0c12;
       --glass: rgba(255,255,255,0.06);
       --glass-2: rgba(255,255,255,0.04);
       --neon: rgba(255,120,200,0.95);
       --accent: rgba(186,142,255,0.9);
       --soft: rgba(255,200,230,0.06);
-      --card-radius:18px;
-      --glass-blur:10px;
+      --card-radius: 18px;
+      --glass-blur: 10px;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0; min-height:100vh; font-family:'Poppins',system-ui,Arial; background: radial-gradient(1200px 600px at 10% 10%, rgba(190,150,240,0.08), transparent), radial-gradient(1000px 500px at 90% 90%, rgba(255,150,200,0.04), transparent), var(--bg); color:#f5eef8; -webkit-font-smoothing:antialiased; display:flex; align-items:center; justify-content:center; padding:40px;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Poppins', system-ui, Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(190,150,240,0.08), transparent),
+                  radial-gradient(1000px 500px at 90% 90%, rgba(255,150,200,0.04), transparent),
+                  var(--bg);
+      color: #f5eef8;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
     }
 
     /* Özel Günler Butonu */
-    .ozel-btn{
-      --w:150px; --h:54px;
-      position:relative; display:inline-flex; align-items:center; justify-content:center; gap:10px; padding:0 20px; height:var(--h); width:var(--w); border-radius:14px; cursor:pointer; text-decoration:none; color: #fff; font-weight:600; letter-spacing:0.2px; backdrop-filter: blur(8px) saturate(130%);
-      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.06); box-shadow: 0 6px 30px rgba(120,60,160,0.16);
+    .ozel-btn {
+      --w: 150px;
+      --h: 54px;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 20px;
+      height: var(--h);
+      width: var(--w);
+      border-radius: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      backdrop-filter: blur(8px) saturate(130%);
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 6px 30px rgba(120,60,160,0.16);
     }
-    .ozel-btn::after{content:''; position:absolute; inset:0; border-radius:14px; pointer-events:none; box-shadow: 0 0 28px 4px rgba(186,142,255,0.06) inset, 0 0 18px rgba(255,120,200,0.06) ;}
-    .ozel-btn .neon{
-      padding:8px 12px; border-radius:10px; background:transparent; border:1px solid rgba(255,120,200,0.18); box-shadow: 0 6px 18px rgba(255,120,200,0.06); font-weight:700; color:#fff;
+    .ozel-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      pointer-events: none;
+      box-shadow: 0 0 28px 4px rgba(186,142,255,0.06) inset, 0 0 18px rgba(255,120,200,0.06);
     }
-    
-    
-
+    .ozel-btn .neon {
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid rgba(255,120,200,0.18);
+      box-shadow: 0 6px 18px rgba(255,120,200,0.06);
+      font-weight: 700;
+      color: #fff;
+    }
 
     /* Popup arka plan */
-    .overlay{position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:30;}
-    .overlay.show{display:flex}
-    .dim{position:absolute; inset:0; background:linear-gradient(180deg, rgba(6,6,12,0.55), rgba(6,6,12,0.75)); backdrop-filter: blur(6px);}
+    .overlay {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+    }
+    .overlay.show { display: flex; }
+    .dim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6,6,12,0.55), rgba(6,6,12,0.75));
+      backdrop-filter: blur(6px);
+    }
 
     /* Kart (popup) */
-    .popup{
-      position:relative; width:92%; max-width:920px; border-radius:22px; padding:26px; z-index:40; display:flex; gap:22px; box-shadow: 0 18px 60px rgba(10,6,18,0.6);
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.06); backdrop-filter: blur(var(--glass-blur));
-      transform:translateY(18px) scale(0.98); opacity:0; transition:all .38s cubic-bezier(.2,.9,.2,1);
+    .popup {
+      position: relative;
+      width: 92%;
+      max-width: 920px;
+      border-radius: 22px;
+      padding: 26px;
+      z-index: 40;
+      display: flex;
+      gap: 22px;
+      box-shadow: 0 18px 60px rgba(10,6,18,0.6);
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(var(--glass-blur));
+      transform: translateY(18px) scale(0.98);
+      opacity: 0;
+      transition: all .38s cubic-bezier(.2,.9,.2,1);
     }
-    .popup.show{ transform:translateY(0) scale(1); opacity:1 }
+    .popup.show { transform: translateY(0) scale(1); opacity: 1; }
 
-    .left{
-      width:360px; min-width:260px; max-height:78vh; overflow:hidden; display:flex; flex-direction:column; gap:14px;
+    .left {
+      width: 360px;
+      min-width: 260px;
+      max-height: 78vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
     }
-    .right{flex:1; min-height:300px; max-height:78vh; overflow:auto; padding:8px;}
+    .right {
+      flex: 1;
+      min-height: 300px;
+      max-height: 78vh;
+      overflow: auto;
+      padding: 8px;
+    }
 
-    .header{ display:flex; align-items:center; gap:12px;}
-    .brand{font-family:'Playfair Display', serif; font-size:22px; color:var(--accent)}
-    .sub{font-size:13px; color:rgba(255,255,255,0.72)}
+    .header { display: flex; align-items: center; gap: 12px; }
+    .brand { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--accent); }
+    .sub { font-size: 13px; color: rgba(255,255,255,0.72); }
 
-    .card-glass{padding:14px; border-radius:14px; background:linear-gradient(180deg, var(--glass), var(--glass-2)); border:1px solid rgba(255,255,255,0.04); box-shadow: 0 6px 18px rgba(0,0,0,0.5);}
+    .card-glass {
+      padding: 14px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, var(--glass), var(--glass-2));
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
 
     /* Gün ekleme form */
-    .add-form{display:flex; flex-direction:column; gap:10px}
-    .field{display:flex; flex-direction:column; gap:6px}
-    label{font-size:12px; color:rgba(255,255,255,0.8)}
-    input[type="text"], input[type="datetime-local"], select{padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:inherit; outline:none}
-    .radio-row{display:flex; gap:10px; align-items:center}
-    .actions{display:flex; gap:10px; margin-top:6px}
-    button.btn{padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:600}
-    button.primary{background:linear-gradient(90deg,var(--accent),var(--neon)); color:#120114}
-    button.ghost{background:transparent; border:1px solid rgba(255,255,255,0.06); color:#fff}
+    .add-form { display: flex; flex-direction: column; gap: 10px; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 12px; color: rgba(255,255,255,0.8); }
+    input[type="text"], input[type="datetime-local"], select {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: transparent;
+      color: inherit;
+      outline: none;
+    }
+    .radio-row { display: flex; gap: 10px; align-items: center; }
+    .actions { display: flex; gap: 10px; margin-top: 6px; }
+    button.btn {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.primary { background: linear-gradient(90deg, var(--accent), var(--neon)); color: #120114; }
+    button.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.06); color: #fff; }
 
     /* Liste */
-    .list{display:flex; flex-direction:column; gap:12px; margin-top:6px}
-    .day-card{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border-radius:12px;}
-    .day-left{display:flex; gap:12px; align-items:center}
-    .avatar{width:54px; height:54px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:700; background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.04);}
-    .title{font-weight:700}
-    .muted{font-size:12px; color:rgba(255,255,255,0.68)}
+    .list { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
+    .day-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; }
+    .day-left { display: flex; gap: 12px; align-items: center; }
+    .avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .title { font-weight: 700; }
+    .muted { font-size: 12px; color: rgba(255,255,255,0.68); }
 
-    .counter{font-family:'Poppins'; font-weight:700; font-size:14px; text-align:right}
+    .counter { font-family: 'Poppins'; font-weight: 700; font-size: 14px; text-align: right; }
 
-    /* üç çizgi butonu */
-    .menu-btn{width:36px; height:36px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; border:1px solid rgba(255,255,255,0.04); background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent)}
-    .menu-dots{display:flex; flex-direction:column; gap:4px}
-    .dot{width:16px; height:2px; background:linear-gradient(90deg,var(--neon),var(--accent)); border-radius:2px}
+    /* Üç çizgi butonu */
+    .menu-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.04);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    }
+    .menu-dots { display: flex; flex-direction: column; gap: 4px; }
+    .dot { width: 16px; height: 2px; background: linear-gradient(90deg, var(--neon), var(--accent)); border-radius: 2px; }
 
-
-    /* açılır menü */
-    .popup-menu{position:absolute; background:linear-gradient(180deg, rgba(20,14,30,0.95), rgba(12,8,22,0.95)); border-radius:10px; padding:8px; box-shadow:0 12px 36px rgba(6,4,12,0.6); border:1px solid rgba(255,255,255,0.04); z-index:70}
-    .popup-menu button{display:block; width:150px; text-align:left; padding:8px 10px; border:none; background:transparent; color:#fff; cursor:pointer}
-    .popup-menu button:hover{background:rgba(255,255,255,0.02)}
+    /* Açılır menü */
+    .popup-menu {
+      position: absolute;
+      background: linear-gradient(180deg, rgba(20,14,30,0.95), rgba(12,8,22,0.95));
+      border-radius: 10px;
+      padding: 8px;
+      box-shadow: 0 12px 36px rgba(6,4,12,0.6);
+      border: 1px solid rgba(255,255,255,0.04);
+      z-index: 70;
+    }
+    .popup-menu button {
+      display: block;
+      width: 150px;
+      text-align: left;
+      padding: 8px 10px;
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+    }
+    .popup-menu button:hover { background: rgba(255,255,255,0.02); }
 
     /* Responsive */
-    @media (max-width:720px){
-      .popup{flex-direction:column; width:95%; padding:18px}
-      .left{width:100%}
+    @media (max-width: 720px) {
+      .popup { flex-direction: column; width: 95%; padding: 18px; }
+      .left { width: 100%; overflow: auto; }
     }
 
-    /* küçük görsel süslemeler */
-    .glow-line{height:2px; border-radius:2px; background:linear-gradient(90deg,var(--neon),var(--accent)); opacity:0.16}
-
+    /* Küçük görsel süslemeler */
+    .glow-line {
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--neon), var(--accent));
+      opacity: 0.16;
+    }
   </style>
 </head>
 <body>
-
   <button class="ozel-btn" id="openPopup" aria-haspopup="dialog" title="Özel Günler">
     <span class="neon">Özel Günler</span>
   </button>
 
   <!-- Overlay / Popup -->
   <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="dim" id="dim" ></div>
-
+    <div class="dim" id="dim"></div>
     <div class="popup" id="popup" role="document" aria-label="Özel Günler Paneli">
       <div class="left card-glass">
         <div class="header">
           <div>
             <div class="brand">Özel Günler</div>
-            <div class="sub"> Dilomla özel günlerimiz </div>
+            <div class="sub">Dilomla özel günlerimiz</div>
           </div>
         </div>
-
-
-
         <div class="glow-line"></div>
-
         <div class="card-glass add-form" style="margin-top:6px">
           <div class="field">
-            <label>Başlık</label>
-            <input id="titleInput" type="text" placeholder="Örneğin: Tanışma Günü" />
-          </div>
-          
-	
+            <label for="titleInput">Başlık</label>
+            <input id="titleInput" type="text" placeholder="Örneğin: Tanışma Günü" aria-label="Özel gün başlığı" />
           </div>
           <div class="field">
-            <label>Tarih & Saat</label>
-            <input id="dateInput" type="datetime-local" />
+            <label for="dateInput">Tarih & Saat</label>
+            <input id="dateInput" type="datetime-local" aria-label="Özel gün tarihi ve saati" />
           </div>
           <div class="field">
             <label>Gösterim Türü</label>
             <div class="radio-row">
-              <label><input type="radio" name="mode" value="backward" checked /> Geri Sayım (kalan)</label>
-              <label><input type="radio" name="mode" value="forward" /> İleri Sayım (geçen)</label>
+              <label><input type="radio" name="mode" value="backward" checked aria-label="Geri sayım (kalan süre)" /> Geri Sayım (kalan)</label>
+              <label><input type="radio" name="mode" value="forward" aria-label="İleri sayım (geçen süre)" /> İleri Sayım (geçen)</label>
             </div>
           </div>
-
           <div class="actions">
             <button class="btn ghost" id="resetBtn">Temizle</button>
             <button class="btn primary" id="saveBtn">Özel Gün Ekle</button>
           </div>
         </div>
-
-        <div style="margin-top:12px; font-size:13px; color:rgba(255,255,255,0.72)">İpucu: Kartın sağındaki üç çizgiye tıklayarak düzenleyebilir veya yeni özel gün ekleyebilirsiniz.</div>
-
+        <div style="margin-top:12px; font-size:13px; color:rgba(255,255,255,0.72)">
+          İpucu: Kartın sağındaki üç çizgiye tıklayarak düzenleyebilir veya yeni özel gün ekleyebilirsiniz.
+        </div>
       </div>
-
       <div class="right card-glass">
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
           <div style="font-weight:700; font-size:16px">Kayıtlı Özel Günler</div>
           <div style="font-size:13px; color:rgba(255,255,255,0.72)">Burada tüm kartlar saklanır — site kapansa bile veriler korunur.</div>
         </div>
-
         <div class="list" id="list"></div>
       </div>
     </div>
@@ -178,7 +299,7 @@
       <div style="display:flex; align-items:center; gap:10px;">
         <div class="counter">{{counter}}</div>
         <div style="position:relative">
-          <div class="menu-btn" aria-haspopup="menu">
+          <div class="menu-btn" aria-haspopup="menu" aria-label="Seçenekler menüsü">
             <div class="menu-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
           </div>
         </div>
@@ -187,178 +308,275 @@
   </template>
 
   <script>
-    /* ---------- Helper & State ---------- */
+    /* ---------- State Management ---------- */
     const STORAGE_KEY = 'ozelgunler_v1';
     let state = { items: [] };
 
-    function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,8) }
+    function uid() {
+      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+    }
 
-    function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items)) }
-    function loadState(){ try{ const raw = localStorage.getItem(STORAGE_KEY); state.items = raw? JSON.parse(raw): []; }catch(e){ state.items = [] } }
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
+    }
 
-    function formatDateISO(iso){ const d = new Date(iso); if(isNaN(d)) return '-'; return d.toLocaleString('tr-TR',{year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit'}) }
-
-    /* ---------- Rendering ---------- */
-    const overlay = document.getElementById('overlay')
-    const popup = document.getElementById('popup')
-    const openBtn = document.getElementById('openPopup')
-    const dim = document.getElementById('dim')
-    const listEl = document.getElementById('list')
-    const tpl = document.getElementById('dayTemplate').innerHTML
-
-    function render(){
-      listEl.innerHTML = '';
-      if(!state.items.length){
-        listEl.innerHTML = '<div style="color:rgba(255,255,255,0.68); padding:22px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);">Henüz özel gün yok. Sol taraftan ekleyebilirsiniz.</div>'
-        return
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        state.items = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        state.items = [];
       }
-      state.items.sort((a,b)=> new Date(a.date) - new Date(b.date));
-      state.items.forEach(item=>{
-        const html = tpl.replace('{{id}}', item.id).replace('{{title}}', escapeHtml(item.title)).replace('{{dateStr}}', formatDateISO(item.date)).replace('{{counter}}', '...')
-        const wrapper = document.createElement('div'); wrapper.innerHTML = html; const node = wrapper.firstElementChild;
+    }
+
+    function formatDateISO(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return '-';
+      return d.toLocaleString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    /* ---------- Rendering Functions ---------- */
+    const overlay = document.getElementById('overlay');
+    const popup = document.getElementById('popup');
+    const openBtn = document.getElementById('openPopup');
+    const dim = document.getElementById('dim');
+    const listEl = document.getElementById('list');
+    const tpl = document.getElementById('dayTemplate').innerHTML;
+
+    function render() {
+      listEl.innerHTML = '';
+      if (!state.items.length) {
+        listEl.innerHTML = '<div style="color:rgba(255,255,255,0.68); padding:22px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);">Henüz özel gün yok. Sol taraftan ekleyebilirsiniz.</div>';
+        return;
+      }
+      state.items.sort((a, b) => new Date(a.date) - new Date(b.date));
+      state.items.forEach(item => {
+        // Sanitize title to prevent XSS
+        const html = tpl.replace('{{id}}', item.id)
+                        .replace('{{title}}', escapeHtml(item.title))
+                        .replace('{{dateStr}}', formatDateISO(item.date))
+                        .replace('{{counter}}', '...');
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = html;
+        const node = wrapper.firstElementChild;
         const menuBtn = node.querySelector('.menu-btn');
         attachMenu(menuBtn, item);
         listEl.appendChild(node);
-      })
+      });
     }
 
-    function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
+    function escapeHtml(s) {
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
 
-    /* ---------- Menu & Actions ---------- */
-    function attachMenu(btn, item){
-      btn.addEventListener('click', (e)=>{
-        e.stopPropagation(); closeAllMenus();
+    /* ---------- Menu Handling ---------- */
+    function attachMenu(btn, item) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeAllMenus();
         const rect = btn.getBoundingClientRect();
-        const menu = document.createElement('div'); menu.className='popup-menu';
-        menu.style.left = (rect.right - 170) + 'px'; menu.style.top = (rect.bottom + 10) + 'px';
+        const menu = document.createElement('div');
+        menu.className = 'popup-menu';
+        menu.style.left = (rect.right - 170) + 'px';
+        menu.style.top = (rect.bottom + 10) + 'px';
 
-        const edit = document.createElement('button'); edit.textContent='Düzenle'; edit.addEventListener('click', ()=>{ openEdit(item); menu.remove() })
-        const addNew = document.createElement('button'); addNew.textContent='Özel Gün Ekle'; addNew.addEventListener('click', ()=>{ openForAdd(); menu.remove() })
-        const remove = document.createElement('button'); remove.textContent='Sil'; remove.addEventListener('click', ()=>{ if(confirm('Bu özel günü silmek istediğine emin misin?')){ removeItem(item.id); } menu.remove() })
+        const edit = document.createElement('button');
+        edit.textContent = 'Düzenle';
+        edit.setAttribute('role', 'menuitem');
+        edit.addEventListener('click', () => { openEdit(item); menu.remove(); });
 
-        menu.appendChild(edit); menu.appendChild(addNew); menu.appendChild(remove);
+        const addNew = document.createElement('button');
+        addNew.textContent = 'Özel Gün Ekle';
+        addNew.setAttribute('role', 'menuitem');
+        addNew.addEventListener('click', () => { openForAdd(); menu.remove(); });
+
+        const remove = document.createElement('button');
+        remove.textContent = 'Sil';
+        remove.setAttribute('role', 'menuitem');
+        remove.addEventListener('click', () => {
+          if (confirm('Bu özel günü silmek istediğine emin misin?')) {
+            removeItem(item.id);
+          }
+          menu.remove();
+        });
+
+        menu.appendChild(edit);
+        menu.appendChild(addNew);
+        menu.appendChild(remove);
         document.body.appendChild(menu);
 
-        // tıklayınca kapatılmasını sağla
-        setTimeout(()=>{
-          const off = (ev)=>{ if(!menu.contains(ev.target)) { menu.remove(); document.removeEventListener('click', off) } }
-          document.addEventListener('click', off)
-        },20)
-      })
+        setTimeout(() => {
+          const off = (ev) => {
+            if (!menu.contains(ev.target)) {
+              menu.remove();
+              document.removeEventListener('click', off);
+            }
+          };
+          document.addEventListener('click', off);
+        }, 20);
+      });
     }
 
-    function closeAllMenus(){ document.querySelectorAll('.popup-menu').forEach(n=>n.remove()) }
+    function closeAllMenus() {
+      document.querySelectorAll('.popup-menu').forEach(n => n.remove());
+    }
 
-    function openEdit(item){
-      // doldur ve kaydet tuşunu düzenleme olarak yap
+    function openEdit(item) {
+      // Populate form for editing
       document.getElementById('titleInput').value = item.title;
       document.getElementById('dateInput').value = toLocalDateTimeValue(item.date);
-      document.querySelectorAll('input[name="mode"]').forEach(r=> r.checked = r.value===item.mode )
-      // değiştirme: save butonu farklı davranacak
+      document.querySelectorAll('input[name="mode"]').forEach(r => r.checked = r.value === item.mode);
       const saveBtn = document.getElementById('saveBtn');
       saveBtn.textContent = 'Güncellemeyi Kaydet';
       saveBtn.dataset.editing = item.id;
       openPanel();
     }
 
-    function openForAdd(){ document.getElementById('titleInput').value=''; document.getElementById('dateInput').value=''; document.querySelectorAll('input[name="mode"]').forEach(r=> r.checked = r.value==='backward'); delete document.getElementById('saveBtn').dataset.editing; document.getElementById('saveBtn').textContent='Özel Gün Ekle'; openPanel(); }
-
-    function removeItem(id){ state.items = state.items.filter(i=> i.id!==id); saveState(); render(); }
-
-    /* ---------- Date helpers ---------- */
-    function toLocalDateTimeValue(iso){ const d = new Date(iso); if(isNaN(d)) return ''; const off = d.getTimezoneOffset(); const local = new Date(d.getTime() - off*60000); return local.toISOString().slice(0,16) }
-
-    /* ---------- Counters ---------- */
-    function updateCounters(){
-      document.querySelectorAll('.day-card').forEach(card=>{
-        const id = card.dataset.id; const item = state.items.find(i=> i.id===id); if(!item) return;
-        const counterEl = card.querySelector('.counter');
-        const now = new Date(); const target = new Date(item.date);
-        if(item.mode==='forward'){
-          // zaman geçtiğinden beri geçen süre
-          const diff = now - target; // ms
-          if(diff < 0){ counterEl.textContent = 'Henüz başlamadı'; }
-          else counterEl.textContent = humanSpan(diff) + '\ngeçti';
-        }else{
-          // backward: kalan süre
-          const diff = target - now;
-          if(diff < 0){ counterEl.textContent = 'Geçti'; }
-          else counterEl.textContent = humanSpan(diff) + '\nkaldı';
-        }
-      })
+    function openForAdd() {
+      // Reset form for adding new entry
+      document.getElementById('titleInput').value = '';
+      document.getElementById('dateInput').value = '';
+      document.querySelectorAll('input[name="mode"]').forEach(r => r.checked = r.value === 'backward');
+      delete document.getElementById('saveBtn').dataset.editing;
+      document.getElementById('saveBtn').textContent = 'Özel Gün Ekle';
+      openPanel();
     }
 
-    function humanSpan(ms){
-      // gün, saat, dakika, saniye
-      let s = Math.floor(ms/1000); const days = Math.floor(s/86400); s -= days*86400; const hours = Math.floor(s/3600); s -= hours*3600; const mins = Math.floor(s/60); const secs = s - mins*60;
-      if(days>0) return `${days}g ${hours}s ${mins}d`;
-      if(hours>0) return `${hours}s ${mins}d ${secs}s`;
-      if(mins>0) return `${mins}d ${secs}s`;
+    function removeItem(id) {
+      state.items = state.items.filter(i => i.id !== id);
+      saveState();
+      render();
+      updateCounters();
+    }
+
+    /* ---------- Date Helpers ---------- */
+    function toLocalDateTimeValue(iso) {
+      const d = new Date(iso);
+      if (isNaN(d)) return '';
+      const off = d.getTimezoneOffset();
+      const local = new Date(d.getTime() - off * 60000);
+      return local.toISOString().slice(0, 16);
+    }
+
+    /* ---------- Counter Updates ---------- */
+    function updateCounters() {
+      document.querySelectorAll('.day-card').forEach(card => {
+        const id = card.dataset.id;
+        const item = state.items.find(i => i.id === id);
+        if (!item) return;
+        const counterEl = card.querySelector('.counter');
+        const now = new Date();
+        const target = new Date(item.date);
+        if (item.mode === 'forward') {
+          const diff = now - target;
+          if (diff < 0) {
+            counterEl.textContent = 'Henüz başlamadı';
+          } else {
+            counterEl.textContent = humanSpan(diff) + '\ngeçti';
+          }
+        } else {
+          const diff = target - now;
+          if (diff < 0) {
+            counterEl.textContent = 'Geçti';
+          } else {
+            counterEl.textContent = humanSpan(diff) + '\nkaldı';
+          }
+        }
+      });
+    }
+
+    function humanSpan(ms) {
+      let s = Math.floor(ms / 1000);
+      const days = Math.floor(s / 86400);
+      s -= days * 86400;
+      const hours = Math.floor(s / 3600);
+      s -= hours * 3600;
+      const mins = Math.floor(s / 60);
+      const secs = s - mins * 60;
+      if (days > 0) return `${days}g ${hours}s ${mins}d`;
+      if (hours > 0) return `${hours}s ${mins}d ${secs}s`;
+      if (mins > 0) return `${mins}d ${secs}s`;
       return `${secs}s`;
     }
 
-    /* ---------- Form handling ---------- */
+    /* ---------- Form Handling (Add and Edit) ---------- */
     const saveBtn = document.getElementById('saveBtn');
     const resetBtn = document.getElementById('resetBtn');
 
-    saveBtn.addEventListener('click', ()=>{
+    saveBtn.addEventListener('click', () => {
       const title = document.getElementById('titleInput').value.trim();
       const dateVal = document.getElementById('dateInput').value;
       const mode = document.querySelector('input[name="mode"]:checked').value;
-      if(!title){ alert('Lütfen bir başlık girin'); return }
-      if(!dateVal){ alert('Lütfen tarih ve saat girin'); return }
-
+      if (!title) {
+        alert('Lütfen bir başlık girin');
+        return;
+      }
+      if (!dateVal) {
+        alert('Lütfen tarih ve saat girin');
+        return;
+      }
       const iso = new Date(dateVal);
-      if(isNaN(iso)){ alert('Geçersiz tarih'); return }
+      if (isNaN(iso)) {
+        alert('Geçersiz tarih');
+        return;
+      }
       const idEditing = saveBtn.dataset.editing;
-      if(idEditing){
-        // düzenle
-        const idx = state.items.findIndex(i=> i.id===idEditing); if(idx>=0){ state.items[idx].title = title; state.items[idx].date = iso.toISOString(); state.items[idx].mode = mode; state.items[idx].updatedAt = new Date().toISOString(); }
-        delete saveBtn.dataset.editing; saveBtn.textContent='Özel Gün Ekle';
-      }else{
-        const newItem = { id: uid(), title, date: iso.toISOString(), mode, createdAt: new Date().toISOString() }
+      if (idEditing) {
+        // Edit existing item
+        const idx = state.items.findIndex(i => i.id === idEditing);
+        if (idx >= 0) {
+          state.items[idx].title = title;
+          state.items[idx].date = iso.toISOString();
+          state.items[idx].mode = mode;
+          state.items[idx].updatedAt = new Date().toISOString();
+        }
+        delete saveBtn.dataset.editing;
+        saveBtn.textContent = 'Özel Gün Ekle';
+      } else {
+        // Add new item
+        const newItem = {
+          id: uid(),
+          title,
+          date: iso.toISOString(),
+          mode,
+          createdAt: new Date().toISOString()
+        };
         state.items.push(newItem);
       }
-      saveState(); render(); closePanel();
-    })
+      saveState();
+      render();
+      resetBtn.click(); // Reset form after save
+      updateCounters(); // Update counters immediately
+    });
 
-    resetBtn.addEventListener('click', ()=>{ document.getElementById('titleInput').value=''; document.getElementById('dateInput').value=''; document.querySelectorAll('input[name="mode"]').forEach(r=> r.checked = r.value==='backward'); delete saveBtn.dataset.editing; saveBtn.textContent='Özel Gün Ekle' })
+    resetBtn.addEventListener('click', () => {
+      document.getElementById('titleInput').value = '';
+      document.getElementById('dateInput').value = '';
+      document.querySelectorAll('input[name="mode"]').forEach(r => r.checked = r.value === 'backward');
+      delete saveBtn.dataset.editing;
+      saveBtn.textContent = 'Özel Gün Ekle';
+    });
 
-    /* ---------- Open / Close panel ---------- */
-    function openPanel(){ overlay.classList.add('show'); popup.classList.add('show'); overlay.setAttribute('aria-hidden','false') }
-    function closePanel(){ overlay.classList.remove('show'); popup.classList.remove('show'); overlay.setAttribute('aria-hidden','true'); closeAllMenus(); }
+    /* ---------- Panel Control ---------- */
+    function openPanel() {
+      overlay.classList.add('show');
+      popup.classList.add('show');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
 
-    openBtn.addEventListener('click', ()=>{
+    function closePanel() {
+      overlay.classList.remove('show');
+      popup.classList.remove('show');
+      overlay.setAttribute('aria-hidden', 'true');
+      closeAllMenus();
+    }
+
+    openBtn.addEventListener('click', () => {
       openPanel();
-    })
-    dim.addEventListener('click', ()=> closePanel())
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closePanel() })
+    });
 
-    /* ---------- Init ---------- */
-    loadState(); render(); updateCounters(); setInterval(()=>{ updateCounters() }, 1000);
+    dim.addEventListener('click', () => closePanel());
 
-    // sayfa yüklendikten sonra kaydetme uyarısı gibi değil - veriler localstorage'da
-
-    // yardımcı: açma fonksiyonu
-    function openPanelAndFocus(){ openPanel(); document.getElementById('titleInput').focus() }
-
-    // global: tıklayınca açık paneldeysek menüleri kapat
-    document.addEventListener('click', ()=> closeAllMenus())
-
-    // utility: açılma fonksiyonu
-    function openPanelIfNotOpen(){ if(!overlay.classList.contains('show')) openPanel() }
-
-    // küçük yardımcı: kullanıcı popup içinden "Yeni ekle" isterse
-    function openForAddInline(){ openForAdd(); }
-
-    // expose for console debugging (sadece geliştirirken)
-    window.__ozelgunler = { state, saveState, loadState };
-
-    /* ---------- ekstra: ilk açılış animasyonu */
-    setTimeout(()=>{ openBtn.animate([{transform:'translateY(0) scale(1)'},{transform:'translateY(-6px) scale(1.02)'},{transform:'translateY(0) scale(1)'}],{duration:1600, iterations:Infinity, easing:'ease-in-out'}) },600)
-
-  </script>
-</body>
-</html>
-
-
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePanel();
+ 
