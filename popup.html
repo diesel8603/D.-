@@ -1,582 +1,711 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sevgilimle Özel Günlerimiz</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0f0c12;
-      --glass: rgba(255,255,255,0.06);
-      --glass-2: rgba(255,255,255,0.04);
-      --neon: rgba(255,120,200,0.95);
-      --accent: rgba(186,142,255,0.9);
-      --soft: rgba(255,200,230,0.06);
-      --card-radius: 18px;
-      --glass-blur: 10px;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: 'Poppins', system-ui, Arial;
-      background: radial-gradient(1200px 600px at 10% 10%, rgba(190,150,240,0.08), transparent),
-                  radial-gradient(1000px 500px at 90% 90%, rgba(255,150,200,0.04), transparent),
-                  var(--bg);
-      color: #f5eef8;
-      -webkit-font-smoothing: antialiased;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px;
-    }
+<meta charset="UTF-8" />
+<title>Özel Günlerimiz </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+/* --- Önceki CSS aynen gelir --- */
+#specialDaysApp {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #eaeef3;
+  background: #0a0c10;
+  min-height: 100vh;
+  margin: 0;
+}
 
-    /* Özel Günler Butonu */
-    .ozel-btn {
-      --w: 150px;
-      --h: 54px;
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 0 20px;
-      height: var(--h);
-      width: var(--w);
-      border-radius: 14px;
-      cursor: pointer;
-      text-decoration: none;
-      color: #fff;
-      font-weight: 600;
-      letter-spacing: 0.2px;
-      backdrop-filter: blur(8px) saturate(130%);
-      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 6px 30px rgba(120,60,160,0.16);
-    }
-    .ozel-btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 14px;
-      pointer-events: none;
-      box-shadow: 0 0 28px 4px rgba(186,142,255,0.06) inset, 0 0 18px rgba(255,120,200,0.06);
-    }
-    .ozel-btn .neon {
-      padding: 8px 12px;
-      border-radius: 10px;
-      background: transparent;
-      border: 1px solid rgba(255,120,200,0.18);
-      box-shadow: 0 6px 18px rgba(255,120,200,0.06);
-      font-weight: 700;
-      color: #fff;
-    }
+/* HEADER */
+.sd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  gap: 12px;
+  position: relative;
+}
+.sd-header h1 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 0.2px;
+  color: #f8fafc;
+}
 
-    /* Popup arka plan */
-    .overlay {
-      position: fixed;
-      inset: 0;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 30;
-    }
-    .overlay.show { display: flex; }
-    .dim {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(6,6,12,0.55), rgba(6,6,12,0.75));
-      backdrop-filter: blur(6px);
-    }
+/* Menü butonu ve popup */
+.sd-menu {
+  position: relative;
+}
+#menuBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+#menuBtn svg rect {
+  fill: rgba(255, 255, 255, 0.9);
+  opacity: 0.9;
+}
+.sd-menu-popup {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  min-width: 140px;
+  box-shadow: 0 12px 40px rgba(2, 6, 23, 0.8);
+  z-index: 10;
+}
+.sd-menu-popup button {
+  color: #e6eef6;
+  background: transparent;
+  border: none;
+  padding: 12px 14px;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+.sd-menu-popup button:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
 
-    /* Kart (popup) */
-    .popup {
-      position: relative;
-      width: 92%;
-      max-width: 920px;
-      border-radius: 22px;
-      padding: 26px;
-      z-index: 40;
-      display: flex;
-      gap: 22px;
-      box-shadow: 0 18px 60px rgba(10,6,18,0.6);
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.06);
-      backdrop-filter: blur(var(--glass-blur));
-      transform: translateY(18px) scale(0.98);
-      opacity: 0;
-      transition: all .38s cubic-bezier(.2,.9,.2,1);
-    }
-    .popup.show { transform: translateY(0) scale(1); opacity: 1; }
+/* Glass toggle button */
+.glass-toggle-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0;
+}
+.glass-btn {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 14px 28px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-weight: 700;
+  color: #f6fbff;
+  box-shadow: 0 8px 38px rgba(11, 14, 22, 0.75);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  backdrop-filter: blur(14px);
+  font-size: 17px;
+}
+.glass-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 48px rgba(4, 6, 14, 0.8);
+}
 
-    .left {
-      width: 360px;
-      min-width: 260px;
-      max-height: 78vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .right {
-      flex: 1;
-      min-height: 300px;
-      max-height: 78vh;
-      overflow: auto;
-      padding: 8px;
-    }
+/* Panel */
+.glass-panel {
+  width: min(920px, 94%);
+  margin: 0 auto 48px auto;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+  border-radius: 20px;
+  padding: 24px 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(130%);
+  transform-origin: center top;
+  max-height: 70vh;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px) scale(0.995);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
+  box-shadow: 0 28px 70px rgba(2, 6, 23, 0.65);
+}
+.glass-panel.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0) scale(1);
+}
 
-    .header { display: flex; align-items: center; gap: 12px; }
-    .brand { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--accent); }
-    .sub { font-size: 13px; color: rgba(255,255,255,0.72); }
+/* Panel header */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.panel-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #e8f0ff;
+}
+.panel-actions button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: #e9f2ff;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background 0.3s ease;
+}
+.panel-actions button:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
 
-    .card-glass {
-      padding: 14px;
-      border-radius: 14px;
-      background: linear-gradient(180deg, var(--glass), var(--glass-2));
-      border: 1px solid rgba(255,255,255,0.04);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-    }
+/* Cards list */
+.cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
 
-    /* Gün ekleme form */
-    .add-form { display: flex; flex-direction: column; gap: 10px; }
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    label { font-size: 12px; color: rgba(255,255,255,0.8); }
-    input[type="text"], input[type="datetime-local"], select {
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: transparent;
-      color: inherit;
-      outline: none;
-    }
-    .radio-row { display: flex; gap: 10px; align-items: center; }
-    .actions { display: flex; gap: 10px; margin-top: 6px; }
-    button.btn {
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-    }
-    button.primary { background: linear-gradient(90deg, var(--accent), var(--neon)); color: #120114; }
-    button.ghost { background: transparent; border: 1px solid rgba(255,255,255,0.06); color: #fff; }
+/* Kartlar */
+.card {
+  background: linear-gradient(135deg, #1c2331, #0f131b);
+  border-radius: 20px;
+  padding: 20px 24px;
+  min-height: 130px;
+  position: relative;
+  overflow: hidden;
+  border: 1.5px solid #3b4a6b;
+  box-shadow:
+    0 8px 20px rgba(14, 26, 54, 0.7),
+    inset 0 0 10px #5470ff66;
+  color: #d0d8ff;
+  transform: translateY(12px) scale(0.98);
+  opacity: 0;
+  transition:
+    transform 0.45s cubic-bezier(0.2, 0.9, 0.2, 1),
+    opacity 0.45s ease,
+    box-shadow 0.3s ease;
+  cursor: pointer;
+}
+.card.show {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.card:hover {
+  box-shadow:
+    0 20px 48px rgba(45, 70, 160, 0.9),
+    inset 0 0 14px #85a5ffbb;
+  transform: translateY(-8px) scale(1.02) rotateZ(-0.3deg);
+}
+.card h4 {
+  margin: 0 0 8px 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #a4b5ff;
+  text-shadow: 0 0 6px #6677ffbb;
+}
+.card .meta {
+  font-size: 13px;
+  opacity: 0.9;
+  margin-bottom: 14px;
+  font-style: italic;
+  color: #c7cdf0;
+}
+.counter {
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.15px;
+  color: #e2e8ff;
+  text-shadow: 0 0 4px #a2b8ffcc;
+}
 
-    /* Liste */
-    .list { display: flex; flex-direction: column; gap: 12px; margin-top: 6px; }
-    .day-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; }
-    .day-left { display: flex; gap: 12px; align-items: center; }
-    .avatar {
-      width: 54px;
-      height: 54px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-      border: 1px solid rgba(255,255,255,0.04);
-    }
-    .title { font-weight: 700; }
-    .muted { font-size: 12px; color: rgba(255,255,255,0.68); }
+/* Silme butonu */
+.card .deleteBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #ff4b4bcc;
+  border: 1px solid #ff4b4bee;
+  padding: 7px 10px;
+  border-radius: 10px;
+  display: none;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+.card.deleteMode .deleteBtn {
+  display: block;
+}
+.card .deleteBtn:hover {
+  background: #ff0000dd;
+}
 
-    .counter { font-family: 'Poppins'; font-weight: 700; font-size: 14px; text-align: right; }
+/* Empty message */
+.panel-empty {
+  text-align: center;
+  padding: 24px 10px;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  font-size: 16px;
+  display: none;
+}
 
-    /* Üç çizgi butonu */
-    .menu-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border: 1px solid rgba(255,255,255,0.04);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
-    }
-    .menu-dots { display: flex; flex-direction: column; gap: 4px; }
-    .dot { width: 16px; height: 2px; background: linear-gradient(90deg, var(--neon), var(--accent)); border-radius: 2px; }
+/* Modal */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 8, 12, 0.55);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 20;
+}
+.modal.show {
+  opacity: 1;
+  pointer-events: all;
+}
+.modal-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
+  border-radius: 18px;
+  padding: 24px 26px;
+  width: 360px;
+  border: 1.5px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 12px 38px rgba(3, 7, 20, 0.8);
+  color: #eef6ff;
+  font-weight: 600;
+}
+.modal-card h3 {
+  margin: 0 0 14px 0;
+  font-size: 21px;
+  font-weight: 700;
+  text-align: center;
+  color: #aac8ff;
+  text-shadow: 0 0 8px #6c93ffbb;
+}
+.modal-card label {
+  display: block;
+  font-size: 14px;
+  margin: 12px 0 6px 0;
+  color: #d4dbf7;
+}
+.modal-card input,
+.modal-card select {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: transparent;
+  color: #d8e2ff;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 600;
+  transition: border-color 0.25s ease;
+}
+.modal-card input:focus,
+.modal-card select:focus {
+  outline: none;
+  border-color: #7193ff;
+  background: rgba(113, 147, 255, 0.1);
+}
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 20px;
+}
+.btn {
+  padding: 10px 16px;
+  border-radius: 14px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: transparent;
+  color: #cbd5ff;
+  font-weight: 700;
+  font-size: 15px;
+  transition: background 0.3s ease;
+}
+.btn.primary {
+  background: linear-gradient(90deg, #6fd3ff88, #9ae3ff55);
+  color: #041022;
+  font-weight: 700;
+  border: none;
+  box-shadow: 0 0 15px #5aa2ffbb;
+}
+.btn:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+.btn.primary:hover {
+  background: linear-gradient(90deg, #7be1ffcc, #a9f0ffcc);
+}
 
-    /* Açılır menü */
-    .popup-menu {
-      position: absolute;
-      background: linear-gradient(180deg, rgba(20,14,30,0.95), rgba(12,8,22,0.95));
-      border-radius: 10px;
-      padding: 8px;
-      box-shadow: 0 12px 36px rgba(6,4,12,0.6);
-      border: 1px solid rgba(255,255,255,0.04);
-      z-index: 70;
-    }
-    .popup-menu button {
-      display: block;
-      width: 150px;
-      text-align: left;
-      padding: 8px 10px;
-      border: none;
-      background: transparent;
-      color: #fff;
-      cursor: pointer;
-    }
-    .popup-menu button:hover { background: rgba(255,255,255,0.02); }
+/* Toast */
+.toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 24px;
+  background: rgba(0, 0, 0, 0.75);
+  padding: 12px 18px;
+  border-radius: 14px;
+  color: #e3e9ff;
+  font-weight: 600;
+  font-size: 15px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  box-shadow: 0 0 16px #607affbb;
+  z-index: 30;
+}
+.toast.show {
+  opacity: 1;
+  pointer-events: all;
+}
 
-    /* Responsive */
-    @media (max-width: 720px) {
-      .popup { flex-direction: column; width: 95%; padding: 18px; }
-      .left { width: 100%; overflow: auto; }
-    }
-
-    /* Küçük görsel süslemeler */
-    .glow-line {
-      height: 2px;
-      border-radius: 2px;
-      background: linear-gradient(90deg, var(--neon), var(--accent));
-      opacity: 0.16;
-    }
-  </style>
+@media (max-width: 520px) {
+  .modal-card {
+    width: 92%;
+  }
+  .cards-list {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+</style>
 </head>
 <body>
-  <button class="ozel-btn" id="openPopup" aria-haspopup="dialog" title="Özel Günler">
-    <span class="neon">Özel Günler</span>
-  </button>
 
-  <!-- Overlay / Popup -->
-  <div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="dim" id="dim"></div>
-    <div class="popup" id="popup" role="document" aria-label="Özel Günler Paneli">
-      <div class="left card-glass">
-        <div class="header">
-          <div>
-            <div class="brand">Özel Günler</div>
-            <div class="sub">Dilomla özel günlerimiz</div>
-          </div>
-        </div>
-        <div class="glow-line"></div>
-        <div class="card-glass add-form" style="margin-top:6px">
-          <div class="field">
-            <label for="titleInput">Başlık</label>
-            <input id="titleInput" type="text" placeholder="Örneğin: Tanışma Günü" aria-label="Özel gün başlığı" />
-          </div>
-          <div class="field">
-            <label for="dateInput">Tarih & Saat</label>
-            <input id="dateInput" type="datetime-local" aria-label="Özel gün tarihi ve saati" />
-          </div>
-          <div class="field">
-            <label>Gösterim Türü</label>
-            <div class="radio-row">
-              <label><input type="radio" name="mode" value="backward" checked aria-label="Geri sayım (kalan süre)" /> Geri Sayım (kalan)</label>
-              <label><input type="radio" name="mode" value="forward" aria-label="İleri sayım (geçen süre)" /> İleri Sayım (geçen)</label>
-            </div>
-          </div>
-          <div class="actions">
-            <button class="btn ghost" id="resetBtn">Temizle</button>
-            <button class="btn primary" id="saveBtn">Özel Gün Ekle</button>
-          </div>
-        </div>
-        <div style="margin-top:12px; font-size:13px; color:rgba(255,255,255,0.72)">
-          İpucu: Kartın sağındaki üç çizgiye tıklayarak düzenleyebilir veya yeni özel gün ekleyebilirsiniz.
-        </div>
+<div id="specialDaysApp">
+  <!-- Üst bar -->
+  <header class="sd-header">
+    <h1>Özel Günlerimiz </h1>
+    <div class="sd-menu">
+      <button id="menuBtn" aria-label="menu" title="Menü">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" >
+          <rect x="4" y="6" width="16" height="2" rx="1"></rect>
+          <rect x="4" y="11" width="16" height="2" rx="1"></rect>
+          <rect x="4" y="16" width="16" height="2" rx="1"></rect>
+        </svg>
+      </button>
+      <div id="menuPopup" class="sd-menu-popup">
+        <button id="openAddBtn">Ekle</button>
+        <button id="toggleDeleteBtn">Sil</button>
+        <button id="clearAllBtn">Tümünü Temizle</button>
       </div>
-      <div class="right card-glass">
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-          <div style="font-weight:700; font-size:16px">Kayıtlı Özel Günler</div>
-          <div style="font-size:13px; color:rgba(255,255,255,0.72)">Burada tüm kartlar saklanır — site kapansa bile veriler korunur.</div>
-        </div>
-        <div class="list" id="list"></div>
+    </div>
+  </header>
+
+  <!-- Açılır cam kutusu butonu -->
+  <div class="glass-toggle-wrap">
+    <button id="glassToggle" class="glass-btn" aria-expanded="false">Özel Günleri Aç</button>
+  </div>
+
+  <!-- Glass panel -->
+  <section id="glassPanel" class="glass-panel" aria-hidden="true">
+    <div class="panel-header">
+      <h2>Özel Günler</h2>
+      <div class="panel-actions">
+        <button id="addQuickBtn">+ Ekle</button>
       </div>
+    </div>
+    <div id="cardsList" class="cards-list"></div>
+    <div class="panel-empty" id="emptyMsg">Henüz özel gün yok. Ekle butonuna basın 🙂</div>
+  </section>
+
+  <!-- Ekleme modal -->
+  <div id="addModal" class="modal" aria-hidden="true">
+    <div class="modal-card">
+      <h3>Yeni Özel Gün Ekle</h3>
+      <form id="addForm">
+        <label>Başlık
+          <input type="text" id="titleInput" required placeholder="Örneğin: Doğum Günü" />
+        </label>
+        <label>Tarih
+          <input type="date" id="dateInput" required />
+        </label>
+        <label>Sayaç Türü
+          <select id="modeSelect">
+            <option value="countdown">Geri Sayım</option>
+            <option value="countup">İleri Sayaç</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button type="submit" class="btn primary">Ekle</button>
+          <button type="button" id="cancelAdd" class="btn">İptal</button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <template id="dayTemplate">
-    <div class="day-card card-glass" data-id="{{id}}">
-      <div class="day-left">
-        <div class="avatar">💖</div>
-        <div>
-          <div class="title">{{title}}</div>
-          <div class="muted">{{dateStr}}</div>
-        </div>
-      </div>
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div class="counter">{{counter}}</div>
-        <div style="position:relative">
-          <div class="menu-btn" aria-haspopup="menu" aria-label="Seçenekler menüsü">
-            <div class="menu-dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </template>
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+</div>
 
-  <script>
-    /* ---------- State Management ---------- */
-    const STORAGE_KEY = 'ozelgunler_v1';
-    let state = { items: [] };
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-    function uid() {
-      return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
-    }
+<script>
+/* --- JAVASCRIPT BAŞLANGIÇ --- */
+// Firebase config buraya kendi Firebase projenin bilgilerini koyacaksın:
+const firebaseConfig = {
+  apiKey: "AIzaSyB0wYo4y9xi1lZSwi02iJQ7v0iZ-nq8y-U",
+  authDomain: "chat-f5f0c.firebaseapp.com",
+  databaseURL: "https://chat-f5f0c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "chat-f5f0c",
+  storageBucket: "chat-f5f0c.appspot.com",
+  messagingSenderId: "571398938754",
+  appId: "1:571398938754:web:147a9e1d0106e8a0a4d49b",
+  measurementId: "G-CFZ8PWP6DY"
+};
 
-    function saveState() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.items));
-    }
+// Firebase başlat
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        state.items = raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        state.items = [];
-      }
-    }
+const glassToggle = document.getElementById('glassToggle');
+const glassPanel = document.getElementById('glassPanel');
+const menuBtn = document.getElementById('menuBtn');
+const menuPopup = document.getElementById('menuPopup');
+const openAddBtn = document.getElementById('openAddBtn');
+const addQuickBtn = document.getElementById('addQuickBtn');
+const toggleDeleteBtn = document.getElementById('toggleDeleteBtn');
+const clearAllBtn = document.getElementById('clearAllBtn');
+const cardsList = document.getElementById('cardsList');
+const addModal = document.getElementById('addModal');
+const cancelAdd = document.getElementById('cancelAdd');
+const addForm = document.getElementById('addForm');
+const toast = document.getElementById('toast');
 
-    function formatDateISO(iso) {
-      const d = new Date(iso);
-      if (isNaN(d)) return '-';
-      return d.toLocaleString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-    }
+let state = {
+  items: [],
+  deleteMode: false,
+  intervals: new Map()
+};
 
-    /* ---------- Rendering Functions ---------- */
-    const overlay = document.getElementById('overlay');
-    const popup = document.getElementById('popup');
-    const openBtn = document.getElementById('openPopup');
-    const dim = document.getElementById('dim');
-    const listEl = document.getElementById('list');
-    const tpl = document.getElementById('dayTemplate').innerHTML;
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toast.timeout);
+  toast.timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+}
 
-    function render() {
-      listEl.innerHTML = '';
-      if (!state.items.length) {
-        listEl.innerHTML = '<div style="color:rgba(255,255,255,0.68); padding:22px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);">Henüz özel gün yok. Sol taraftan ekleyebilirsiniz.</div>';
-        return;
-      }
-      state.items.sort((a, b) => new Date(a.date) - new Date(b.date));
-      state.items.forEach(item => {
-        // Sanitize title to prevent XSS
-        const html = tpl.replace('{{id}}', item.id)
-                        .replace('{{title}}', escapeHtml(item.title))
-                        .replace('{{dateStr}}', formatDateISO(item.date))
-                        .replace('{{counter}}', '...');
-        const wrapper = document.createElement('div');
-        wrapper.innerHTML = html;
-        const node = wrapper.firstElementChild;
-        const menuBtn = node.querySelector('.menu-btn');
-        attachMenu(menuBtn, item);
-        listEl.appendChild(node);
-      });
-    }
+function formatDateISO(dateStr){
+  const d = new Date(dateStr);
+  if(isNaN(d)) return '';
+  return d.toLocaleDateString('tr-TR', {year:'numeric', month:'2-digit', day:'2-digit'});
+}
 
-    function escapeHtml(s) {
-      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    }
-
-    /* ---------- Menu Handling ---------- */
-    function attachMenu(btn, item) {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        closeAllMenus();
-        const rect = btn.getBoundingClientRect();
-        const menu = document.createElement('div');
-        menu.className = 'popup-menu';
-        menu.style.left = (rect.right - 170) + 'px';
-        menu.style.top = (rect.bottom + 10) + 'px';
-
-        const edit = document.createElement('button');
-        edit.textContent = 'Düzenle';
-        edit.setAttribute('role', 'menuitem');
-        edit.addEventListener('click', () => { openEdit(item); menu.remove(); });
-
-        const addNew = document.createElement('button');
-        addNew.textContent = 'Özel Gün Ekle';
-        addNew.setAttribute('role', 'menuitem');
-        addNew.addEventListener('click', () => { openForAdd(); menu.remove(); });
-
-        const remove = document.createElement('button');
-        remove.textContent = 'Sil';
-        remove.setAttribute('role', 'menuitem');
-        remove.addEventListener('click', () => {
-          if (confirm('Bu özel günü silmek istediğine emin misin?')) {
-            removeItem(item.id);
-          }
-          menu.remove();
+// Firebase’den veriyi dinle
+function listenItems(){
+  db.ref('specialDays').on('value', (snapshot) => {
+    const data = snapshot.val();
+    state.items = [];
+    if(data){
+      Object.keys(data).forEach(key => {
+        state.items.push({
+          id: key,
+          title: data[key].title,
+          date: data[key].date,
+          mode: data[key].mode
         });
-
-        menu.appendChild(edit);
-        menu.appendChild(addNew);
-        menu.appendChild(remove);
-        document.body.appendChild(menu);
-
-        setTimeout(() => {
-          const off = (ev) => {
-            if (!menu.contains(ev.target)) {
-              menu.remove();
-              document.removeEventListener('click', off);
-            }
-          };
-          document.addEventListener('click', off);
-        }, 20);
       });
     }
+    render();
+  });
+}
 
-    function closeAllMenus() {
-      document.querySelectorAll('.popup-menu').forEach(n => n.remove());
+// Firebase’e kayıt
+function saveItems(){
+  // Firebase'de tüm veriyi değiştiriyoruz
+  // (dilersen sadece tek eleman da güncelleyebilirsin)
+  const dataObj = {};
+  state.items.forEach(item => {
+    dataObj[item.id] = {
+      title: item.title,
+      date: item.date,
+      mode: item.mode
+    };
+  });
+  db.ref('specialDays').set(dataObj).catch(err => {
+    showToast('Kayıt hatası: ' + err.message);
+  });
+}
+
+// Kartları çiz
+function render(){
+  // Önce interval temizle
+  state.intervals.forEach(iid => clearInterval(iid));
+  state.intervals.clear();
+
+  cardsList.innerHTML = '';
+
+  if(state.items.length === 0){
+    document.getElementById('emptyMsg').style.display = 'block';
+  } else {
+    document.getElementById('emptyMsg').style.display = 'none';
+  }
+
+  state.items.forEach((item, idx) => {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.dataset.id = item.id;
+
+    // Sil butonu
+    const delBtn = document.createElement('button');
+    delBtn.className = 'deleteBtn';
+    delBtn.textContent = '×';
+    delBtn.onclick = (e) => {
+      e.stopPropagation();
+      deleteItem(item.id);
+    };
+
+    const h = document.createElement('h4');
+    h.textContent = item.title;
+
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.textContent = 'Tarih: ' + formatDateISO(item.date);
+
+    const counter = document.createElement('div');
+    counter.className = 'counter';
+
+    card.append(delBtn, h, meta, counter);
+
+    if(state.deleteMode) card.classList.add('deleteMode');
+
+    card.onclick = () => {
+      if(state.deleteMode) return;
+      item.mode = item.mode === 'countdown' ? 'countup' : 'countdown';
+      saveItems();
+    };
+
+    cardsList.appendChild(card);
+
+    setTimeout(() => card.classList.add('show'), 30 + idx * 40);
+
+    startCounter(item, counter);
+  });
+}
+
+function humanizeTime(ms){
+  const sign = ms < 0 ? '-' : '';
+  const abs = Math.abs(ms);
+  const sec = Math.floor(abs / 1000) % 60;
+  const min = Math.floor(abs / (1000 * 60)) % 60;
+  const hr  = Math.floor(abs / (1000 * 60 * 60)) % 24;
+  const days = Math.floor(abs / (1000 * 60 * 60 * 24));
+  return `${sign}${days} gün ${hr} saat ${min} dk ${sec} sn`;
+}
+
+function startCounter(item, el){
+  const id = item.id;
+  update();
+  const iid = setInterval(update, 1000);
+  state.intervals.set(id, iid);
+
+  function update(){
+    const now = new Date();
+    const target = new Date(item.date + 'T00:00:00');
+    if(item.mode === 'countdown'){
+      const diff = target.getTime() - now.getTime();
+      el.textContent = diff > 0 ? `Kalan: ${humanizeTime(diff)}` : `Tarih geçti: ${humanizeTime(diff)}`;
+    } else {
+      const diff = now.getTime() - target.getTime();
+      el.textContent = diff >= 0 ? `Geçen süre: ${humanizeTime(diff)}` : `Henüz başlamadı: ${humanizeTime(diff)}`;
     }
+  }
+}
 
-    function openEdit(item) {
-      // Populate form for editing
-      document.getElementById('titleInput').value = item.title;
-      document.getElementById('dateInput').value = toLocalDateTimeValue(item.date);
-      document.querySelectorAll('input[name="mode"]').forEach(r => r.checked = r.value === item.mode);
-      const saveBtn = document.getElementById('saveBtn');
-      saveBtn.textContent = 'Güncellemeyi Kaydet';
-      saveBtn.dataset.editing = item.id;
-      openPanel();
-    }
-
-    function openForAdd() {
-      // Reset form for adding new entry
-      document.getElementById('titleInput').value = '';
-      document.getElementById('dateInput').value = '';
-      document.querySelectorAll('input[name="mode"]').forEach(r => r.checked = r.value === 'backward');
-      delete document.getElementById('saveBtn').dataset.editing;
-      document.getElementById('saveBtn').textContent = 'Özel Gün Ekle';
-      openPanel();
-    }
-
-    function removeItem(id) {
-      state.items = state.items.filter(i => i.id !== id);
-      saveState();
+function addItem({title,date,mode}){
+  const newId = db.ref().child('specialDays').push().key;
+  const newItem = {id: newId, title, date, mode};
+  state.items.unshift(newItem);
+  saveItems();
+  render();
+  showToast('Eklendi ✅');
+}
+function deleteItem(id){
+  // Firebase'den sil
+  db.ref('specialDays/' + id).remove()
+  .then(() => {
+    state.items = state.items.filter(i => i.id !== id);
+    render();
+    showToast('Silindi ❌');
+  }).catch(err => {
+    showToast('Silme hatası: ' + err.message);
+  });
+}
+function clearAll(){
+  if(confirm('Tümünü silmek istiyor musun?')){
+    db.ref('specialDays').remove()
+    .then(() => {
+      state.items = [];
       render();
-      updateCounters();
-    }
-
-    /* ---------- Date Helpers ---------- */
-    function toLocalDateTimeValue(iso) {
-      const d = new Date(iso);
-      if (isNaN(d)) return '';
-      const off = d.getTimezoneOffset();
-      const local = new Date(d.getTime() - off * 60000);
-      return local.toISOString().slice(0, 16);
-    }
-
-    /* ---------- Counter Updates ---------- */
-    function updateCounters() {
-      document.querySelectorAll('.day-card').forEach(card => {
-        const id = card.dataset.id;
-        const item = state.items.find(i => i.id === id);
-        if (!item) return;
-        const counterEl = card.querySelector('.counter');
-        const now = new Date();
-        const target = new Date(item.date);
-        if (item.mode === 'forward') {
-          const diff = now - target;
-          if (diff < 0) {
-            counterEl.textContent = 'Henüz başlamadı';
-          } else {
-            counterEl.textContent = humanSpan(diff) + '\ngeçti';
-          }
-        } else {
-          const diff = target - now;
-          if (diff < 0) {
-            counterEl.textContent = 'Geçti';
-          } else {
-            counterEl.textContent = humanSpan(diff) + '\nkaldı';
-          }
-        }
-      });
-    }
-
-    function humanSpan(ms) {
-      let s = Math.floor(ms / 1000);
-      const days = Math.floor(s / 86400);
-      s -= days * 86400;
-      const hours = Math.floor(s / 3600);
-      s -= hours * 3600;
-      const mins = Math.floor(s / 60);
-      const secs = s - mins * 60;
-      if (days > 0) return `${days}g ${hours}s ${mins}d`;
-      if (hours > 0) return `${hours}s ${mins}d ${secs}s`;
-      if (mins > 0) return `${mins}d ${secs}s`;
-      return `${secs}s`;
-    }
-
-    /* ---------- Form Handling (Add and Edit) ---------- */
-    const saveBtn = document.getElementById('saveBtn');
-    const resetBtn = document.getElementById('resetBtn');
-
-    saveBtn.addEventListener('click', () => {
-      const title = document.getElementById('titleInput').value.trim();
-      const dateVal = document.getElementById('dateInput').value;
-      const mode = document.querySelector('input[name="mode"]:checked').value;
-      if (!title) {
-        alert('Lütfen bir başlık girin');
-        return;
-      }
-      if (!dateVal) {
-        alert('Lütfen tarih ve saat girin');
-        return;
-      }
-      const iso = new Date(dateVal);
-      if (isNaN(iso)) {
-        alert('Geçersiz tarih');
-        return;
-      }
-      const idEditing = saveBtn.dataset.editing;
-      if (idEditing) {
-        // Edit existing item
-        const idx = state.items.findIndex(i => i.id === idEditing);
-        if (idx >= 0) {
-          state.items[idx].title = title;
-          state.items[idx].date = iso.toISOString();
-          state.items[idx].mode = mode;
-          state.items[idx].updatedAt = new Date().toISOString();
-        }
-        delete saveBtn.dataset.editing;
-        saveBtn.textContent = 'Özel Gün Ekle';
-      } else {
-        // Add new item
-        const newItem = {
-          id: uid(),
-          title,
-          date: iso.toISOString(),
-          mode,
-          createdAt: new Date().toISOString()
-        };
-        state.items.push(newItem);
-      }
-      saveState();
-      render();
-      resetBtn.click(); // Reset form after save
-      updateCounters(); // Update counters immediately
+      showToast('Temizlendi 🧹');
+    }).catch(err => {
+      showToast('Temizleme hatası: ' + err.message);
     });
+  }
+}
 
-    resetBtn.addEventListener('click', () => {
-      document.getElementById('titleInput').value = '';
-      document.getElementById('dateInput').value = '';
-      document.querySelectorAll('input[name="mode"]').forEach(r => r.checked = r.value === 'backward');
-      delete saveBtn.dataset.editing;
-      saveBtn.textContent = 'Özel Gün Ekle';
-    });
+glassToggle.onclick = () => {
+  const open = glassPanel.classList.toggle('open');
+  glassToggle.textContent = open ? 'Özel Günleri Kapat' : 'Özel Günleri Aç';
+  glassToggle.setAttribute('aria-expanded', open);
+};
 
-    /* ---------- Panel Control ---------- */
-    function openPanel() {
-      overlay.classList.add('show');
-      popup.classList.add('show');
-      overlay.setAttribute('aria-hidden', 'false');
+menuBtn.onclick = (e) => {
+  e.stopPropagation();
+  menuPopup.style.display = menuPopup.style.display === 'flex' ? 'none' : 'flex';
+  menuPopup.style.flexDirection = 'column';
+};
+document.addEventListener('click', () => menuPopup.style.display = 'none');
+openAddBtn.onclick = (e) => { e.stopPropagation(); openModal(); };
+addQuickBtn.onclick = openModal;
+toggleDeleteBtn.onclick = () => {
+  state.deleteMode = !state.deleteMode;
+  render();
+  showToast(state.deleteMode ? 'Silme modu açık' : 'Silme modu kapalı');
+};
+clearAllBtn.onclick = clearAll;
+
+function openModal(){
+  addModal.classList.add('show');
+  addModal.setAttribute('aria-hidden','false');
+  addForm.reset();
+  document.getElementById('dateInput').valueAsDate = new Date();
+}
+function closeModal(){
+  addModal.classList.remove('show');
+  addModal.setAttribute('aria-hidden','true');
+}
+cancelAdd.onclick = closeModal;
+addModal.onclick = (e) => {
+  if(e.target === addModal) closeModal();
+};
+
+addForm.onsubmit = (e) => {
+  e.preventDefault();
+  const title = document.getElementById('titleInput').value.trim();
+  const date = document.getElementById('dateInput').value;
+  const mode = document.getElementById('modeSelect').value;
+  if(!title || !date) return showToast('Başlık ve tarih gerekli');
+  const chosenDate = new Date(date + 'T00:00:00');
+  const now = new Date();
+  if(mode === 'countdown' && chosenDate < now){
+    if(!confirm('Tarih geçmiş. Yine de "Geri Sayım" olarak eklemek istiyor musunuz? (Hayır seçerseniz "İleri Sayaç" seçilecek)')){
+      addItem({title, date, mode: 'countup'});
+      closeModal();
+      return;
     }
+  }
+  addItem({title, date, mode});
+  closeModal();
+};
 
-    function closePanel() {
-      overlay.classList.remove('show');
-      popup.classList.remove('show');
-      overlay.setAttribute('aria-hidden', 'true');
-      closeAllMenus();
-    }
+listenItems();
+/* --- JAVASCRIPT BİTİŞ --- */
+</script>
 
-    openBtn.addEventListener('click', () => {
-      openPanel();
-    });
-
-    dim.addEventListener('click', () => closePanel());
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closePanel();
- 
+</body>
+  </html>
+  
