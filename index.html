@@ -416,71 +416,44 @@ body {
 </style>
 
 <style>
-.glass-neon-btn {
-  display: inline-block;
+/* Card stili */
+.glass-card {
+  width: 300px;
+  padding: 30px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 40px auto;
+}
+
+/* Buton stili */
+.glass-btn {
   padding: 12px 28px;
   font-size: 1.1rem;
   font-weight: 600;
-  text-decoration: none;
-  border-radius: 14px;
-  position: relative;
-  overflow: visible;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
   color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
-  z-index: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
-.glass-neon-btn::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 160%;
-  height: 160%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) rotate(0deg);
-  filter: blur(12px);
-  animation: rotateLight 25s linear infinite;
-  z-index: -1;
+.glass-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
 }
-
-.glass-neon-btn:hover {
-  background: rgba(100, 150, 255, 0.15);
-  box-shadow: 0 0 20px rgba(100, 150, 255, 0.7),
-              0 0 40px rgba(100, 150, 255, 0.4);
-  transform: scale(1.07);
-}
-
-.glass-neon-btn.aos-animate {
-  animation: fadeScaleIn 1.2s ease forwards;
-  opacity: 0;
-}
-
-@keyframes fadeScaleIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes rotateLight {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
+	
 	
 	
 </style>	
@@ -495,14 +468,11 @@ body {
   <div class="header" data-aos="fade-down">
     <h1 data-aos="zoom-in"><br> sitene hoş geldin bitanecik sevgilimm</h1><br>
     <br><br>
-    	
-    <a href="popup.html" 
-   class="glass-neon-btn" 
-   data-aos="fade-up" 
-   data-aos-duration="1200" 
-   data-aos-once="true">
-   özel günlerimiz
-	</a>
+    <div class="glass-card">
+  <div class="glass-card">
+  <a href="popup.html" class="glass-btn">özel günlerimiz</a>
+  </div>
+		
 	    
 
   </div>
@@ -840,6 +810,7 @@ window.addEventListener("load", () => {
 	
 
 	
+
 
 
 
