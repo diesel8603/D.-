@@ -2,6 +2,17 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
+	<!-- Head içine ekle -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script>
+  AOS.init({
+    duration: 1000, // animasyon süresi (ms)
+    once: true // bir kere oynat
+  });
+</script>
+	
 
 	<link rel="manifest" href="/manifest.json" />
 	
@@ -175,74 +186,112 @@
     }
     
     <style>
-  .countdown {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin: 20px 0;
-  }
-  .time-box {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 15px 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    min-width: 70px;
-    text-align: center;
-  }
-  .number {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #e91e63;
-  }
-  .label {
-    font-size: 0.9em;
-    color: #666;
-  }
-  #message-section button {
-    margin-top: 15px;
-    padding: 8px 16px;
-    background: #ff4081;
-    color: white;
-    border: none;
-    border-radius: 8px;
-  }
-  #message-section input {
-    padding: 8px;
-    margin-top: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-  #secret-message {
-    margin-top: 20px;
-    background: #fff3f3;
-    padding: 15px;
-    border-radius: 10px;
-    font-size: 1.2em;
-  }
-  
-  .glass-neon-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    padding: 15px 40px;
-    border-radius: 50px;
-    color: #fff;
-    font-size: 18px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    cursor: pointer;
-    box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
-    transition: all 0.3s ease-in-out;
-    text-decoration: none;
-    display: inline-block;
+  /* Genel stil */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  color: #fff;
 }
 
-.glass-neon-btn:hover {
-    box-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
-    transform: scale(1.05);
+/* Geri sayım kutuları */
+.countdown {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
+.time-box {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 15px 20px;
+  text-align: center;
+  min-width: 80px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: float 3s ease-in-out infinite;
+}
+
+.time-box:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.number {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Mesaj alanı */
+#message-section {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 20px 25px;
+  border-radius: 20px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 1.5s ease forwards;
+}
+
+#message-section button {
+  background: linear-gradient(90deg, #ff758c, #ff7eb3);
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  font-size: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#message-section button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(255, 118, 158, 0.6);
+}
+
+#passwordInput {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin: 10px 0;
+  width: 160px;
+  text-align: center;
+}
+
+#secret-message {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  animation: glow 1.5s infinite alternate;
+}
+
+/* Animasyonlar */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px #fff, 0 0 10px #ff99ac, 0 0 15px #ff6f91; }
+  to { text-shadow: 0 0 10px #fff, 0 0 20px #ff99ac, 0 0 25px #ff6f91; }
+	  }
+	  
 </style>
 
 
@@ -387,25 +436,26 @@
   <h2 class="countdown-title">Prensesimin doğum gününe kalan zaman</h2>
 	
 <div class="countdown">
+<div class="countdown">
   <div class="time-box" id="daysBox" data-aos="flip-down">
     <div class="number" id="days">--</div>
     <div class="label">Gün</div>
   </div>
-  <div class="time-box" id="hoursBox" data-aos="flip-down">
+  <div class="time-box" id="hoursBox" data-aos="flip-down" data-aos-delay="100">
     <div class="number" id="hours">--</div>
     <div class="label">Saat</div>
   </div>
-  <div class="time-box" id="minutesBox" data-aos="flip-down">
+  <div class="time-box" id="minutesBox" data-aos="flip-down" data-aos-delay="200">
     <div class="number" id="minutes">--</div>
     <div class="label">Dakika</div>
   </div>
-  <div class="time-box" id="secondsBox" data-aos="flip-down">
+  <div class="time-box" id="secondsBox" data-aos="flip-down" data-aos-delay="300">
     <div class="number" id="seconds">--</div>
     <div class="label">Saniye</div>
   </div>
 </div>
 
-<div id="message-section">
+<div id="message-section" data-aos="zoom-in" data-aos-delay="500">
   <button onclick="showPasswordPrompt()">Mesajı Gör</button>
   <div id="passwordPrompt" style="display:none;">
     <input type="password" id="passwordInput" placeholder="Şifreyi gir..." />
@@ -414,6 +464,8 @@
   <div id="secret-message" style="display:none;">
     🎂 Doğum günün kutlu olsun! Seninle her şey daha güzel 💖
   </div>
+</div>
+	
 </div>
 
 
@@ -715,6 +767,7 @@ window.addEventListener("load", () => {
 	
 
 	
+
 
 
 
