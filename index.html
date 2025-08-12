@@ -600,48 +600,55 @@
 
 
 <script>
-  window.addEventListener("load", () => {
-    const popup = document.getElementById("gunaydinPopup");
-    const now = new Date();
-    const hour = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-    const dayName = days[now.getDay()];
-    const date = now.getDate();
-    const month = now.toLocaleString("tr-TR", { month: "long" });
+window.addEventListener("load", () => {
+  const popup = document.getElementById("gunaydinPopup");
+  const now = new Date();
+  const hour = now.getHours();
+  const minutes = now.getMinutes().toString().padStart(2, "0");
+  const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+  const dayName = days[now.getDay()];
+  const date = now.getDate();
+  const month = now.toLocaleString("tr-TR", { month: "long" });
 
-    let message = "", emoji = "", colorClass = "";
+  let message = "", emoji = "", colorClass = "";
 
-    if (hour >= 5 && hour < 12) {
-      message = `Günaydın prensesimm <br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-      emoji = "🌞";
-      colorClass = "color-morning";
-    } else if (hour >= 12 && hour < 18) {
-      message = `Günün senin kadar güzel geçsin sevgilimm <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-      emoji = "☀️";
-      colorClass = "color-day";
-    } else if (hour >= 18 && hour < 22) {
-      message = `İyi akşamlar güzelimm <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-      emoji = "🌇";
-      colorClass = "color-evening";
-    } else {
-      message = `İyi geceler tatlı rüyalar aşkımm benim<br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-      emoji = "🌙";
-      colorClass = "color-night";
-    }
-	  </script>
+  if (hour >= 6 && hour <= 14) {
+    // 06:00 - 14:00
+    message = `Günaydın prensesimm <br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+    emoji = "🌞";
+    colorClass = "color-morning";
+  } else if (hour === 14 && minutes > "00" || (hour > 14 && hour <= 18)) {
+    // 14:01 - 18:00
+    message = `Günün senin kadar güzel geçsin sevgilimm <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+    emoji = "☀️";
+    colorClass = "color-day";
+  } else if ((hour === 18 && minutes > "00") || (hour > 18 && hour <= 23)) {
+    // 18:01 - 23:00
+    message = `İyi akşamlar güzelimm <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+    emoji = "🌇";
+    colorClass = "color-evening";
+  } else {
+    // 23:01 - 05:59
+    message = `İyi geceler tatlı rüyalar aşkımm benim<br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
+    emoji = "🌙";
+    colorClass = "color-night";
+  }
 
-    popup.innerHTML = `<div class="popup-content">
+  popup.innerHTML = `
+    <div class="popup-content">
       <div class="emoji">${emoji}</div>
       <div>${message}</div>
-    </div>`;
-    popup.classList.add(colorClass);
-    popup.style.animation = "fadeInScale 1s ease forwards";
+    </div>
+  `;
+  popup.classList.add(colorClass);
+  popup.style.animation = "fadeInScale 1s ease forwards";
 
-    setTimeout(() => {
-      popup.style.animation = "fadeOutScale 1s ease forwards";
-    }, 9000);
-  });
+  setTimeout(() => {
+    popup.style.animation = "fadeOutScale 1s ease forwards";
+  }, 9000);
+});
+</script>
+	  
 
 	<script>
   if ('serviceWorker' in navigator) {
@@ -668,6 +675,7 @@
 	
 
 	
+
 
 
 
