@@ -2,11 +2,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-	<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
+	
 	
 	<!-- Head içine ekle -->
 <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
@@ -301,99 +297,6 @@ body {
 	  
 </style>
 
-	<style>
-		.glass-neon-btn {
-  display: inline-block;
-  padding: 12px 25px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-decoration: none;
-  border-radius: 12px;
-  position: relative;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  cursor: pointer;
-  
-  /* Gradient yazı */
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  background-image: linear-gradient(90deg, #ff7eb3, #ff758c, #ffb199);
-  -webkit-text-fill-color: transparent;
-
-  /* Glow ring */
-  box-shadow: 0 0 8px rgba(255, 118, 158, 0.6),
-              0 0 16px rgba(255, 118, 158, 0.4),
-              0 0 24px rgba(255, 118, 158, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Işık hüzmesi */
-.glass-neon-btn::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -75%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    120deg,
-    rgba(255,255,255,0) 0%,
-    rgba(255,255,255,0.6) 50%,
-    rgba(255,255,255,0) 100%
-  );
-  transform: skewX(-25deg);
-}
-
-/* Hover efekti */
-.glass-neon-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(255, 118, 158, 0.8),
-              0 0 24px rgba(255, 118, 158, 0.6),
-              0 0 36px rgba(255, 118, 158, 0.4);
-}
-
-.glass-neon-btn:hover::after {
-  animation: shineMove 1s ease forwards;
-}
-
-/* Işık hüzmesi hareket animasyonu */
-@keyframes shineMove {
-  0% { left: -75%; }
-  100% { left: 125%; }
-}
-
-/* Görünür olduğunda glowEntrance animasyonu */
-.glass-neon-btn.aos-animate {
-  animation: glowEntrance 1.2s ease forwards;
-}
-
-@keyframes glowEntrance {
-  0% {
-    transform: scale(0.9);
-    box-shadow: 0 0 0 rgba(255, 118, 158, 0);
-    opacity: 0;
-  }
-  60% {
-    transform: scale(1.08);
-    box-shadow: 0 0 20px rgba(255, 118, 158, 0.8),
-                0 0 40px rgba(255, 118, 158, 0.6);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    box-shadow: 0 0 8px rgba(255, 118, 158, 0.6),
-                0 0 16px rgba(255, 118, 158, 0.4),
-                0 0 24px rgba(255, 118, 158, 0.2);
-  }
-							}
-		
-	</style>	
-
-
-
 
   </style>
   
@@ -510,6 +413,78 @@ body {
     color: #ff7994;
   }
 }
+</style>
+
+<style>
+	.glass-neon-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 14px;
+  position: relative;
+  overflow: visible; /* Işık halkası taşması için visible */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  z-index: 0;
+}
+
+/* Işık halkası */
+.glass-neon-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 160%;
+  height: 160%;
+  background: radial-gradient(circle, rgba(30,144,255,0.35) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(0deg);
+  filter: blur(10px);
+  animation: rotateLight 20s linear infinite;
+  z-index: -1; /* Butonun arkasında kalması için */
+}
+
+/* Hover efekti */
+.glass-neon-btn:hover {
+  background: rgba(30, 144, 255, 0.15);
+  box-shadow: 0 0 20px rgba(30, 144, 255, 0.7),
+              0 0 40px rgba(30, 144, 255, 0.4);
+  transform: scale(1.07);
+}
+
+/* AOS görünür olunca animasyon */
+.glass-neon-btn.aos-animate {
+  animation: fadeScaleIn 1.2s ease forwards;
+  opacity: 0;
+}
+
+@keyframes fadeScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotateLight {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+	
 </style>	
 
 </head>
@@ -525,12 +500,12 @@ body {
     	
     <a href="popup.html" 
    class="glass-neon-btn" 
-   data-aos="zoom-in" 
-   data-aos-duration="1000" 
+   data-aos="fade-up" 
+   data-aos-duration="1200" 
    data-aos-once="true">
    özel günlerimiz
 	</a>
-	  
+	    
 
   </div>
   <h2 class="countdown-title">Prensesimin doğum gününe kalan zaman</h2>
@@ -867,6 +842,7 @@ window.addEventListener("load", () => {
 	
 
 	
+
 
 
 
