@@ -416,7 +416,7 @@ body {
 </style>
 
 <style>
-	.glass-neon-btn {
+.glass-neon-btn {
   display: inline-block;
   padding: 12px 28px;
   font-size: 1.1rem;
@@ -424,7 +424,7 @@ body {
   text-decoration: none;
   border-radius: 14px;
   position: relative;
-  overflow: visible; /* Işık halkası taşması için visible */
+  overflow: visible;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(12px);
   border: 1.5px solid rgba(255, 255, 255, 0.3);
@@ -435,7 +435,6 @@ body {
   z-index: 0;
 }
 
-/* Işık halkası */
 .glass-neon-btn::before {
   content: "";
   position: absolute;
@@ -443,23 +442,21 @@ body {
   left: 50%;
   width: 160%;
   height: 160%;
-  background: radial-gradient(circle, rgba(30,144,255,0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%) rotate(0deg);
-  filter: blur(10px);
-  animation: rotateLight 20s linear infinite;
-  z-index: -1; /* Butonun arkasında kalması için */
+  filter: blur(12px);
+  animation: rotateLight 25s linear infinite;
+  z-index: -1;
 }
 
-/* Hover efekti */
 .glass-neon-btn:hover {
-  background: rgba(30, 144, 255, 0.15);
-  box-shadow: 0 0 20px rgba(30, 144, 255, 0.7),
-              0 0 40px rgba(30, 144, 255, 0.4);
+  background: rgba(100, 150, 255, 0.15);
+  box-shadow: 0 0 20px rgba(100, 150, 255, 0.7),
+              0 0 40px rgba(100, 150, 255, 0.4);
   transform: scale(1.07);
 }
 
-/* AOS görünür olunca animasyon */
 .glass-neon-btn.aos-animate {
   animation: fadeScaleIn 1.2s ease forwards;
   opacity: 0;
@@ -484,6 +481,7 @@ body {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+	
 	
 </style>	
 
@@ -842,6 +840,7 @@ window.addEventListener("load", () => {
 	
 
 	
+
 
 
 
