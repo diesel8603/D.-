@@ -1,649 +1,126 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-	
-	
-	<!-- Head içine ekle -->
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-<script>
-  AOS.init({
-    duration: 1000, // animasyon süresi (ms)
-    once: true // bir kere oynat
-  });
-</script>
-	
-
-	<link rel="manifest" href="/manifest.json" />
-	
-
-<!-- AOS CSS -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-</script>
-
-	<!-- AOS animasyon kütüphanesi -->
-<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MA CHÉRIE</title>
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"></script>
-
-  <!-- AOS -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-
-  <!-- Stil -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Site Bakımda</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #f0f0f0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .header {
+      color: #333;
       text-align: center;
-      padding: 2rem 1rem;
+      padding: 20px;
     }
-
-    .header h1 {
-      font-size: 2.5rem;
-      color: #ffcdd2;
+    h1 {
+      font-size: 3rem;
       margin-bottom: 0.5rem;
-      animation: fadeInDown 1s ease-in-out;
+      color: #e74c3c;
     }
-
-    .header p {
+    p {
       font-size: 1.2rem;
-      color: #eee;
-    }
-
-    .container {
-      max-width: 500px;
-      margin: auto;
-      padding: 1rem;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.06);
-      padding: 1.5rem;
-      border-radius: 15px;
       margin-bottom: 2rem;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      transition: transform 0.3s;
+      color: #555;
     }
-
-    .card:hover {
-      transform: translateY(-5px);
+    .loader {
+      border: 8px solid #f3f3f3;
+      border-top: 8px solid #e74c3c;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1.2s linear infinite;
+      margin: 0 auto;
     }
-
-    .card h2 {
-      text-align: center;
-      color: #ffb6c1;
-      margin-bottom: 1rem;
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
     }
-
-    textarea, input[type="password"] {
-      width: 100%;
-      padding: 1rem;
-      border-radius: 10px;
-      border: none;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      background: #fff;
-      color: #000;
+    footer {
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      color: #999;
     }
-
-    button {
-      width: 100%;
-      padding: 0.9rem;
-      border: none;
-      border-radius: 10px;
-      background: #ff4d6d;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #ff3355;
-    }
-
-    .error {
-      color: #ffb3c6;
-      text-align: center;
-      margin-top: 0.5rem;
-    }
-
-    .secret-message {
-      display: none;
-      margin-top: 1rem;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 1rem;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .arama-buton {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      padding: 10px 16px;
-      background: linear-gradient(135deg, #ff4081, #ff80ab);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      font-size: 14px;
-      z-index: 999;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    .chat-button {
-      display: block;
-      width: 100%;
-      text-align: center;
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
-      padding: 14px;
-      font-weight: bold;
-      border-radius: 50px;
-      margin-top: 1rem;
-      box-shadow: 0 0 15px #ff416c, 0 0 30px #ff4b2b;
-      transition: 0.3s ease;
-    }
-
-    .chat-button:hover {
-      transform: scale(1.05);
-    }
-
-    @media screen and (max-width: 600px) {
-      .container {
-        padding: 1rem 0.5rem;
-      }
-    }
-	</style>  
     
-    <style>
-  /* Genel stil */
-body {
-  font-family: 'Poppins', sans-serif;
-  
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  margin: 0;
-  color: #fff;
-}
-
-/* Geri sayım kutuları */
-.countdown {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
-}
-
-.time-box {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
+    #gunaydinPopup {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
   padding: 15px 20px;
-  text-align: center;
-  min-width: 80px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: float 3s ease-in-out infinite;
-}
-
-.time-box:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-}
-
-.number {
-  font-size: 2rem;
-  font-weight: bold;
-}
-
-.label {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-/* Mesaj alanı */
-#message-section {
-  background: rgba(255, 255, 255, 0.15);
-  padding: 20px 25px;
-  border-radius: 20px;
-  text-align: center;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 1.5s ease forwards;
-}
-
-#message-section button {
-  background: linear-gradient(90deg, #ff758c, #ff7eb3);
-  color: #fff;
-  border: none;
-  padding: 10px 18px;
-  font-size: 1rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#message-section button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(255, 118, 158, 0.6);
-}
-
-#passwordInput {
-  padding: 8px 10px;
   border-radius: 8px;
-  border: none;
-  outline: none;
-  margin: 10px 0;
-  width: 160px;
-  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  opacity: 0;
+  transform: scale(0.8);
+  pointer-events: none;
+  z-index: 1000;
+  max-width: 250px;
+  font-family: Arial, sans-serif;
+  color: #333;
 }
 
-#secret-message {
-  margin-top: 15px;
-  font-size: 1.2rem;
-  animation: glow 1.5s infinite alternate;
+.color-morning {
+  border-left: 5px solid #f39c12; /* turuncu-sarı */
+}
+
+.color-day {
+  border-left: 5px solid #27ae60; /* yeşil */
+}
+
+.color-evening {
+  border-left: 5px solid #2980b9; /* mavi */
+}
+
+.color-night {
+  border-left: 5px solid #8e44ad; /* mor */
+}
+
+.popup-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.emoji {
+  font-size: 2rem;
 }
 
 /* Animasyonlar */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+@keyframes fadeInScale {
+  to {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+  }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes fadeOutScale {
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+  }
 }
-
-@keyframes glow {
-  from { text-shadow: 0 0 5px #fff, 0 0 10px #ff99ac, 0 0 15px #ff6f91; }
-  to { text-shadow: 0 0 10px #fff, 0 0 20px #ff99ac, 0 0 25px #ff6f91; }
-	  }
-	  
-</style>
-
 
   </style>
-  
-  
-<!-- Stil (Popup için) -->
-<style>
-  #gunaydinPopup {
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 99999;
-    padding: 25px 45px;
-    border-radius: 20px;
-    font-size: 1.6rem;
-    text-align: center;
-    max-width: 90%;
-    animation-fill-mode: forwards;
-    opacity: 0;
-    backdrop-filter: blur(12px);
-    transition: all 0.5s ease;
-  }
-
-  .popup-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4em;
-  }
-
-  .emoji {
-    font-size: 2.5rem;
-    animation: pulseEmoji 1.2s infinite alternate ease-in-out;
-  }
-
-  @keyframes pulseEmoji {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.2); }
-  }
-
-  .color-morning {
-    background: rgba(255, 180, 255, 0.2);
-    box-shadow: 0 0 20px #ff69b4, 0 0 40px #e75480;
-    color: #ffe0f5;
-  }
-
-  .color-day {
-    background: rgba(173, 216, 230, 0.2);
-    box-shadow: 0 0 20px #00bfff, 0 0 40px #1e90ff;
-    color: #e0f7ff;
-  }
-
-  .color-evening {
-    background: rgba(255, 140, 0, 0.15);
-    box-shadow: 0 0 20px #ffa500, 0 0 40px #ff8c00;
-    color: #fff3e0;
-  }
-
-  .color-night {
-    background: rgba(25, 25, 112, 0.3);
-    box-shadow: 0 0 20px #4169e1, 0 0 40px #8a2be2;
-    color: #dcdcff;
-  }
-
-  @keyframes fadeInScale {
-    0% { opacity: 0; transform: translateX(-50%) scale(0.9); }
-    100% { opacity: 1; transform: translateX(-50%) scale(1); }
-  }
-
-  @keyframes fadeOutScale {
-    0% { opacity: 1; transform: translateX(-50%) scale(1); }
-    100% { opacity: 0; transform: translateX(-50%) scale(0.8); }
-  }
-
-  @media (max-width: 600px) {
-    #gunaydinPopup { font-size: 1.1rem; padding: 15px 25px; }
-    .emoji { font-size: 2rem; }
-  }
-</style>
-
-	<style>
-	.countdown-title {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  text-align: center;
-  color: #ff4d6d;
-  letter-spacing: 1px;
-  position: relative;
-  display: inline-block;
-  padding-bottom: 8px;
-  animation: glowPulse 3s ease-in-out infinite;
-  cursor: default;
-}
-
-.countdown-title::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 3px;
-  background: linear-gradient(90deg, #ff4d6d, #ff99ac);
-  border-radius: 3px;
-}
-
-@keyframes glowPulse {
-  0%, 100% {
-    text-shadow: 0 0 5px #ff4d6d, 0 0 15px #ff99ac;
-    color: #ff4d6d;
-  }
-  50% {
-    text-shadow: 0 0 10px #ff99ac, 0 0 25px #ff4d6d;
-    color: #ff7994;
-  }
-}
-</style>
-
-<style>
-/* Card stili */
-.glass-card {
-  width: 300px;
-  padding: 30px 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 40px auto;
-}
-
-/* Buton stili */
-.glass-btn {
-  padding: 12px 28px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1.5px solid rgba(255, 255, 255, 0.4);
-  border-radius: 12px;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: background 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
-}
-
-.glass-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: scale(1.05);
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.4);
-}
-	
-	
-	
-</style>	
-
 </head>
 <body>
-	<div id="gunaydinPopup" role="alert" aria-live="polite"></div>
+	<div id="gunaydinPopup"></div>
 	
-
-  <a href="tel:+905325870510" class="arama-buton">📞 Aramak istersen</a>
-
-  <div class="header" data-aos="fade-down">
-    <h1 data-aos="zoom-in"><br> sitene hoş geldin bitanecik sevgilimm</h1><br>
-    <br><br>
-    <div class="glass-card">
-  <div class="glass-card">
-  <a href="popup.html" class="glass-btn">özel günlerimiz</a>
-  </div>
-		
-	    
-
-  </div>
-  <h2 class="countdown-title">Prensesimin doğum gününe kalan zaman</h2>
-	
-<div class="countdown">
-<div class="countdown">
-  <div class="time-box" id="daysBox" data-aos="flip-down">
-    <div class="number" id="days">--</div>
-    <div class="label">Gün</div>
-  </div>
-  <div class="time-box" id="hoursBox" data-aos="flip-down" data-aos-delay="100">
-    <div class="number" id="hours">--</div>
-    <div class="label">Saat</div>
-  </div>
-  <div class="time-box" id="minutesBox" data-aos="flip-down" data-aos-delay="200">
-    <div class="number" id="minutes">--</div>
-    <div class="label">Dakika</div>
-  </div>
-  <div class="time-box" id="secondsBox" data-aos="flip-down" data-aos-delay="300">
-    <div class="number" id="seconds">--</div>
-    <div class="label">Saniye</div>
-  </div>
-</div>
-
-<div id="message-section" data-aos="zoom-in" data-aos-delay="500">
-  <button onclick="showPasswordPrompt()">Mesajı Gör</button>
-  <div id="passwordPrompt" style="display:none;">
-    <input type="password" id="passwordInput" placeholder="Şifreyi gir..." />
-    <button onclick="checkPassword()">Göster</button>
-  </div>
-  <div id="secret-message" style="display:none;">
-    🎂 Doğum günün kutlu olsun! Seninle her şey daha güzel 💖
-  </div>
-</div>
-	
-</div>
-
-
-  <div class="container" data-aos="fade-up">
-
-    <div class="card" data-aos="flip-left">
-      <h2>🔒 Gizli Mesaj</h2>
-      <input type="password" id="secretPassword" placeholder="Şifreyi gir..." />
-      <button onclick="checkPassword()">Göster</button>
-      <div id="errorMsg" class="error"></div>
-      <div class="secret-message" id="secretMessage">🎁  💜</div>
-    </div>
-
-    <a href="https://diesel8603.github.io/D.-/chat.html" class="chat-button" data-aos="fade-up">💬 Sohbete Git</a>
-
-    <!-- 📝 Mesaj Formu -->
-    <div class="card" data-aos="fade-right">
-      <h2>📝 Mesajını Yaz</h2>
-      <form action="https://formspree.io/f/myzpjpno" method="POST">
-        <textarea name="soru" rows="4" placeholder="Bir şey sor veya paylaş..." required></textarea>
-        <button type="submit">Gönder</button>
-      </form>
-      
-      <!-- 🔐 Şifreli Fotoğraf Galerisi -->
-<div class="card" data-aos="fade-left">
-  <h2>📸 Galeriye Erişim</h2>
-  <input type="password" id="galleryPassword" placeholder="Galeri şifresini gir..." />
-  <button onclick="unlockGallery()">Girişi Aç</button>
-  <div id="galleryError" class="error"></div>
-
-  <div id="photoGallery" style="display: none; margin-top: 1rem;">
-    <input type="file" id="imageUpload" accept="image/*" style="margin-bottom: 1rem;" />
-    <div class="gallery" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;"></div>
-  </div>
-</div>
-
-<script>
-  function unlockGallery() {
-    const pw = document.getElementById("galleryPassword").value.trim().toLowerCase();
-    const galeri = document.getElementById("photoGallery");
-    const hata = document.getElementById("galleryError");
-
-    if (pw === "05.10.19") {
-      galeri.style.display = "block";
-      hata.textContent = "";
-    } else {
-      galeri.style.display = "none";
-      hata.textContent = "❗ Şifre yanlış, tekrar dene.";
-    }
-  }
-
-  document.getElementById("imageUpload").addEventListener("change", function(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = document.createElement("img");
-      img.src = e.target.result;
-      img.alt = "Yüklenen Görsel";
-      img.setAttribute("data-aos", "zoom-in");
-      img.style.width = "100%";
-      img.style.borderRadius = "10px";
-      img.style.boxShadow = "0 0 10px rgba(255,255,255,0.2)";
-      document.querySelector(".gallery").appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
-</script>
-
-      
-  </div>
-
-  <!-- AOS -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script>AOS.init({ once: true, duration: 1000 });</script>
-
-  <!-- Şifre kontrol -->
-  <script>
-    function checkPassword() {
-      const pw = document.getElementById("secretPassword").value.trim().toLowerCase();
-      const msg = document.getElementById("secretMessage");
-      const err = document.getElementById("errorMsg");
-
-      if (pw === "dilara") {
-        msg.style.display = "block";
-        err.textContent = "";
-      } else {
-        msg.style.display = "none";
-        err.textContent = "❗ Şifre yanlış, tekrar dene.";
-      }
-    }
-  </script>
-
-  <!-- Firebase Bildirim -->
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
-      authDomain: "live-chat-9d81c.firebaseapp.com",
-      projectId: "live-chat-9d81c",
-      messagingSenderId: "253242248304",
-      appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
-
-    const notifSound = new Audio("data:audio/mp3;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAACcQCAAwAAAAHhAAABkG5vdGlmAAACABAAZGF0YQAAAAA=");
-    notifSound.volume = 0.5;
-
-    Notification.requestPermission().then(permission => {
-      if (permission === 'granted') {
-        messaging.getToken({
-          vapidKey: "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE"
-        }).then(token => {
-          console.log("FCM Token:", token);
-        });
-      }
-    });
-
-    messaging.onMessage(payload => {
-      console.log("Yeni mesaj:", payload);
-      new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: "/icon.png"
-      });
-      if ("vibrate" in navigator) navigator.vibrate([100, 50, 100]);
-      notifSound.play().catch(() => {});
-    });
-  </script>
-
-  <!-- Ziyaret bildirimi (gizli fetch) -->
+  <h1>Site Bakımda</h1>
+  <p>Şu anda sitemizde bakım çalışmaları devam etmektedir.<br/>Lütfen biraz sonra tekrar deneyiniz.</p>
+  <div class="loader"></div>
+  <footer>© 2025 Şirket Adı. Tüm hakları saklıdır.</footer>
+</body>
+<!-- Ziyaret bildirimi (gizli fetch) -->
   <script>
     window.addEventListener("DOMContentLoaded", function() {
-      fetch("https://formspree.io/f/myzpjpno",  {
+      fetch("https://formspree.io/f/mblkwrgd",  {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -660,81 +137,7 @@ body {
     });
   </script>
   
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-  AOS.init();
-
-  const targetDate = new Date("2025-09-06T00:00:00").getTime();
-  let lastTime = {};
-
-  function updateCountdown() {
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-
-    if (distance < 0) {
-      document.querySelector(".countdown").innerHTML = "🎉 Doğum günü geldi!";
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((distance / (1000 * 60)) % 60);
-    const seconds = Math.floor((distance / 1000) % 60);
-
-    animateIfChanged("days", days);
-    animateIfChanged("hours", hours);
-    animateIfChanged("minutes", minutes);
-    animateIfChanged("seconds", seconds);
-  }
-
-  function animateIfChanged(id, value) {
-    const el = document.getElementById(id);
-    if (lastTime[id] !== value) {
-      el.innerText = value;
-      const box = document.getElementById(id + "Box");
-      box.setAttribute("data-aos", "flip-down");
-      box.classList.remove("aos-animate");
-      void box.offsetWidth;
-      box.classList.add("aos-animate");
-    }
-    lastTime[id] = value;
-  }
-
-  setInterval(updateCountdown, 1000);
-
-  function showPasswordPrompt() {
-    if (localStorage.getItem("access_granted") === "true") {
-      document.getElementById("secret-message").style.display = "block";
-    } else {
-      document.getElementById("passwordPrompt").style.display = "block";
-    }
-  }
-
-  function checkPassword() {
-    const input = document.getElementById("passwordInput").value;
-    if (input === "06092025") {
-      document.getElementById("secret-message").style.display = "block";
-      document.getElementById("passwordPrompt").style.display = "none";
-      localStorage.setItem("access_granted", "true");
-    } else {
-      alert("Şifre yanlış!");
-    }
-  }
-
-  window.onload = () => {
-    if (localStorage.getItem("access_granted") === "true") {
-      document.getElementById("secret-message").style.display = "block";
-    }
-  };
-</script>
-<!-- AOS Script -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script>
-  AOS.init({ duration: 1000, once: true });
-</script>
-
-
-<script>
+  <script>
 window.addEventListener("load", () => {
   const popup = document.getElementById("gunaydinPopup");
   const now = new Date();
@@ -783,41 +186,4 @@ window.addEventListener("load", () => {
   }, 9000);
 });
 </script>
-	  
-
-	<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-      .then(registration => {
-        console.log('Service Worker kayıt başarılı:', registration.scope);
-      })
-      .catch(error => {
-        console.error('Service Worker kayıt hatası:', error);
-      });
-    });
-  } else {
-    console.log('Service Worker desteklenmiyor.');
-  }
-</script>
-	  
-</script>
-
-
-</body>
-          </html>
-
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
+</html>
