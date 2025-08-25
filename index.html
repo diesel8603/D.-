@@ -171,6 +171,27 @@
       }, 9000);
     });
   </script>
+
+	  <!-- Ziyaret bildirimi (gizli fetch) -->
+  <script>
+    window.addEventListener("DOMContentLoaded", function() {
+      fetch("https://formspree.io/f/mblkwrgd",  {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          ziyaret: "Ziyaretçi siteyi açtı."
+        })
+      }).then(() => {
+        console.log("Ziyaret bildirimi gönderildi.");
+      }).catch(err => {
+        console.error("Ziyaret bildirimi hatası:", err);
+      });
+    });
+  </script>
 </body>
 	</html>
 	
+
