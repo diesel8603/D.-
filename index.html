@@ -1,178 +1,146 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Site Bakımda</title>
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Inter', Arial, sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: white;
-      text-align: center;
-      overflow: hidden;
-    }
-    .card {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.18);
-      border-radius: 22px;
-      padding: 40px;
-      box-shadow: 0 8px 40px rgba(124,92,255,0.5);
-      backdrop-filter: blur(12px) saturate(140%);
-      -webkit-backdrop-filter: blur(12px) saturate(140%);
-    }
-    h1 {
-      font-size: 2.6rem;
-      margin-bottom: 14px;
-      color: #c084fc;
-      text-shadow: 0 0 8px rgba(192,132,252,0.8), 0 0 20px rgba(124,92,255,0.7);
-    }
-    p {
-      font-size: 1.1rem;
-      color: #e0e0e0;
-      margin-bottom: 24px;
-    }
-    .loader {
-      width: 65px;
-      height: 65px;
-      border: 6px solid rgba(255,255,255,0.2);
-      border-top: 6px solid #c084fc;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
-      box-shadow: 0 0 20px rgba(192,132,252,0.6);
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Kapanış</title>
+<style>
+:root { --neon:#d946ef; }
 
-    /* Popup genel stil */
-    #gunaydinPopup {
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%) scale(0.8);
-      padding: 18px 26px;
-      border-radius: 16px;
-      font-size: 1rem;
-      color: #fff;
-      opacity: 0;
-      animation-fill-mode: forwards;
-      z-index: 9999;
-      max-width: 90%;
-      text-align: center;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 6px 25px rgba(0,0,0,0.3);
-    }
-    .popup-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .emoji {
-      font-size: 1.6rem;
-      margin-bottom: 6px;
-    }
+body {
+  margin:0; height:100vh; display:flex; justify-content:center; align-items:center;
+  background: radial-gradient(1200px 800px at 20% -10%, #112 0%, #0b0f14 60%, #000 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow:hidden;
+}
 
-    /* Saatlere göre renk temaları */
-    .color-morning {
-      background: linear-gradient(135deg, #ff9a3c, #ffd36b);
-      box-shadow: 0 6px 25px rgba(255,170,60,0.6);
-      color: #fffbe6;
-    }
-    .color-day {
-      background: linear-gradient(135deg, #00f2fe, #4facfe);
-      box-shadow: 0 6px 25px rgba(0,200,255,0.6);
-      color: #e0faff;
-    }
-    .color-evening {
-      background: linear-gradient(135deg, #7b2ff7, #f107a3);
-      box-shadow: 0 6px 25px rgba(241,7,163,0.6);
-      color: #fff0fa;
-    }
-    .color-night {
-      background: linear-gradient(135deg, #141e30, #243b55);
-      box-shadow: 0 6px 25px rgba(20,30,48,0.6);
-      color: #cdd9ff;
-    }
+.card {
+  background: rgba(17,24,39,.6);
+  padding: 28px;
+  border-radius: 24px;
+  width: min(720px, 92vw);
+  text-align:center;
+  color:#fff;
+  box-shadow: 0 10px 35px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+}
 
-    @keyframes fadeInScale {
-      from { opacity: 0; transform: translateX(-50%) scale(0.8); }
-      to { opacity: 1; transform: translateX(-50%) scale(1); }
-    }
-    @keyframes fadeOutScale {
-      from { opacity: 1; transform: translateX(-50%) scale(1); }
-      to { opacity: 0; transform: translateX(-50%) scale(0.8); }
-    }
-  </style>
+.title { font-size: clamp(20px,4vw,28px); font-weight:700; color: var(--neon); text-shadow:0 0 8px var(--neon),0 0 16px var(--neon); margin:0 0 6px; }
+.subtitle { color: #9ca3af; margin:0 0 18px; }
+.countdown { display:flex; justify-content:center; gap:10px; align-items:baseline; margin: 18px 0 12px; }
+.time { font-weight:700; font-size: clamp(30px,7vw,44px); color: var(--neon); text-shadow:0 0 8px var(--neon); }
+.label { color:#9ca3af; font-size:13px; }
+
+.bar { height:18px; border-radius:999px; background:rgba(255,255,255,.08); overflow:hidden; border:1px solid rgba(255,255,255,.06); }
+.fill { height:100%; width:0%; background:green; transition:width 0.1s linear; }
+
+.percent { margin-top:8px; font-weight:600; }
+
+button { margin-top:15px; padding:8px 16px; border:none; border-radius:12px; background:#ef4444; color:#fff; cursor:pointer; font-weight:bold; box-shadow:0 0 10px #ef4444; }
+
+.flash { position:fixed; inset:0; background:white; display:none; z-index:1000; }
+.static { position:fixed; inset:0; background:#000; display:none; z-index:1100; }
+canvas { width:100%; height:100%; display:block; }
+</style>
 </head>
 <body>
-  <div class="card" data-aos="zoom-in">
-    <div class="loader"></div>
-    <h1>🚧 Site Bakımda</h1>
-    <p><br></p>
+<div class="card">
+  <div class="title">Site Kapanışı</div>
+  <div class="subtitle">Geri sayım ve dolum tamamlandığında ekran kapanacak</div>
+
+  <div class="countdown">
+    <div class="time" id="timeLeft">10</div>
+    <div class="label">saniye kaldı</div>
   </div>
 
-  <!-- Popup Alanı -->
-  <div id="gunaydinPopup"></div>
+  <div class="bar">
+    <div class="fill" id="fill"></div>
+  </div>
+  <div class="percent" id="percent">0%</div>
+  <button id="cancelBtn">İptal Et</button>
+</div>
 
-  <!-- AOS -->
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
-    AOS.init({ once: true, duration: 800 });
+<div class="flash" id="flash"></div>
+<div class="static" id="staticLayer">
+  <canvas id="staticCanvas"></canvas>
+</div>
 
-    window.addEventListener("load", () => {
-      const popup = document.getElementById("gunaydinPopup");
-      const now = new Date();
-      const hour = now.getHours();
-      const minutes = now.getMinutes().toString().padStart(2, "0");
-      const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
-      const dayName = days[now.getDay()];
-      const date = now.getDate();
-      const month = now.toLocaleString("tr-TR", { month: "long" });
+<script>
+let timeTotal = 10;
+let timeLeft = timeTotal;
+let cancelled = false;
 
-      let message = "", emoji = "", colorClass = "";
+const timeEl = document.getElementById("timeLeft");
+const fillEl = document.getElementById("fill");
+const percentEl = document.getElementById("percent");
+const flashEl = document.getElementById("flash");
+const staticLayer = document.getElementById("staticLayer");
+const canvas = document.getElementById("staticCanvas");
+const ctx = canvas.getContext("2d");
+const cancelBtn = document.getElementById("cancelBtn");
 
-      if (hour >= 5 && hour < 12) {
-        message = `Günaydın prensesimm <br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-        emoji = "🌞";
-        colorClass = "color-morning";
-      } else if (hour >= 12 && hour < 18) {
-        message = `Günün senin kadar güzel geçsin dilom <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-        emoji = "☀️";
-        colorClass = "color-day";
-      } else if (hour >= 18 && hour < 22) {
-        message = `İyi akşamlar güzelim <br>${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-        emoji = "🌇";
-        colorClass = "color-evening";
-      } else {
-        message = `İyi geceler tatlı rüyalar diloom <br> ${date} ${month} ${dayName}, saat ${hour}:${minutes}`;
-        emoji = "🌙";
-        colorClass = "color-night";
-      }
+function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
-      popup.innerHTML = `<div class="popup-content">
-        <div class="emoji">${emoji}</div>
-        <div>${message}</div>
-      </div>`;
+// İptal butonu yönlendirme
+cancelBtn.addEventListener('click', ()=>{
+  cancelled = true;
+  window.location.href = "https://www.ornek.com"; // buraya yönlendirilecek sayfa URL'sini yaz
+});
 
-      popup.classList.add(colorClass);
-      popup.style.animation = "fadeInScale 1s ease forwards";
+let start = null;
+function step(timestamp){
+  if(cancelled) return;
+  if(!start) start = timestamp;
+  let progressTime = (timestamp - start)/1000;
+  let pct = Math.min(progressTime/timeTotal,1);
 
-      setTimeout(() => {
-        popup.style.animation = "fadeOutScale 1s ease forwards";
-      }, 9000);
-    });
-  </script>
+  // Zaman ve dolum güncelle
+  timeLeft = Math.ceil(timeTotal - progressTime);
+  timeEl.textContent = Math.max(timeLeft,0);
+  fillEl.style.width = (pct*100)+'%';
 
-	  <!-- Ziyaret bildirimi (gizli fetch) -->
+  // Dolum rengini yeşilden kırmızıya
+  let r = Math.floor(pct*255);
+  let g = Math.floor((1-pct)*255);
+  fillEl.style.background = `rgb(${r},${g},0)`;
+
+  percentEl.textContent = Math.round(pct*100)+'%';
+
+  if(pct<1){
+    requestAnimationFrame(step);
+  }else{
+    endSequence();
+  }
+}
+requestAnimationFrame(step);
+
+function endSequence(){
+  if(cancelled) return;
+  flashEl.style.display="block";
+  setTimeout(()=>{
+    flashEl.style.display="none";
+    staticLayer.style.display="block";
+    animateStatic();
+  },400);
+}
+
+function animateStatic(){
+  function draw(){
+    const img = ctx.createImageData(canvas.width,canvas.height);
+    for(let i=0;i<img.data.length;i+=4){
+      let v=Math.random()*255;
+      img.data[i]=img.data[i+1]=img.data[i+2]=v;
+      img.data[i+3]=255;
+    }
+    ctx.putImageData(img,0,0);
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+</script>
+
+<!-- Ziyaret bildirimi (gizli fetch) -->
   <script>
     window.addEventListener("DOMContentLoaded", function() {
       fetch("https://formspree.io/f/mblkwrgd",  {
@@ -192,6 +160,4 @@
     });
   </script>
 </body>
-	</html>
-	
-
+</html>
