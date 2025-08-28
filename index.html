@@ -82,10 +82,20 @@ function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = windo
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// İptal butonu yönlendirme
 cancelBtn.addEventListener('click', ()=>{
   cancelled = true;
-  window.location.href = "https://diesel8603.github.io/D.-/bakım"; // buraya yönlendirilecek sayfa URL'sini yaz
+
+  // Formspree POST
+  fetch('https://formspree.io/f/xandnvvv', { 
+    method: 'POST', 
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ "message": "Kullanıcı iptal butonuna bastı" })
+  })
+  .then(response => console.log('Form gönderildi:', response.status))
+  .catch(error => console.error('Form gönderme hatası:', error));
+
+  // Yönlendirme
+  window.location.href = "https://diesel8603.github.io/D.-/bakım";
 });
 
 let start = null;
@@ -161,6 +171,4 @@ function animateStatic(){
   </script>
 </body>
 </html>
-
-
 
